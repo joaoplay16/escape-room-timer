@@ -14,3 +14,5 @@ val Back600 = Color(0xFF4E4E4E)
 
 val Green700 = Color(0xFF2D9531)
 val Green100 = Color(0xFF00FF19)
+
+val Gray100 = Color(0xFFE7E7E7)
