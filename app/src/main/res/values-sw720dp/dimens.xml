@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="action_button_horizontal_padding">100dp</dimen>
+    <dimen name="action_button_vertical_padding">15dp</dimen>
+
+    <dimen name="input_time_size">120dp</dimen>
+    <dimen name="input_secret_code_size">200dp</dimen>
+    <dimen name="big_input_secret_code_size">300dp</dimen>
+    <dimen name="keypad_button_horizontal_padding">14dp</dimen>
+    <dimen name="keypad_button_vertical_padding">10dp</dimen>
+    <dimen name="default_icon_padding">15dp</dimen>
+    <dimen name="text_label_horizontal_padding">15dp</dimen>
+    <dimen name="text_label_vertical_padding">15dp</dimen>
+    <dimen name="text_label_top_padding">15dp</dimen>
+    <dimen name="text_label_bottom_padding">26dp</dimen>
+
+    <dimen name="text_label_font_size">24sp</dimen>
+    <dimen name="input_text_font_size">36sp</dimen>
+    <dimen name="timer_font_size">96sp</dimen>
+    <dimen name="keypad_button_font_size">15sp</dimen>
+    <dimen name="big_secret_code_font_size">96sp</dimen>
+    <dimen name="secret_code_font_size">96sp</dimen>
+    <dimen name="action_button_font_size">15sp</dimen>
+    <dimen name="small_button_font_size">24sp</dimen>
+    <dimen name="small_text_font_size">24sp</dimen>
+    <dimen name="label_font_size">24sp</dimen>
+    <dimen name="title_font_size">24sp</dimen>
+</resources>
