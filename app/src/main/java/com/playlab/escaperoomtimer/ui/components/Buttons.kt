@@ -3,6 +3,7 @@ package com.playlab.escaperoomtimer.ui.components
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -25,7 +26,7 @@ import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 
 @Composable
 fun KeypadButton(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.size(dimensionResource(id = R.dimen.keypad_button_size)),
     buttonText: String,
     color: Color = MaterialTheme.colors.onSurface,
     fontSize: TextUnit = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
