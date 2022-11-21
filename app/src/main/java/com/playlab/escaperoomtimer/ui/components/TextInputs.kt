@@ -1,6 +1,8 @@
 package com.playlab.escaperoomtimer.ui.components
 
 import android.content.res.Configuration
+import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -11,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -29,14 +32,20 @@ fun TimeInput(
     placeholder: String = "00",
     fontSize: TextUnit = dimensionResource(id = R.dimen.input_text_font_size).value.sp,
     maxLength: Int = 2,
-    onValueChange: (String) -> Unit
+    readOnly: Boolean = false,
+    enabled: Boolean = true,
+    onClick: () -> Unit = {},
+    onValueChange: (String) -> Unit = {}
 ) {
 
+
     TextField(
-        modifier = modifier
+        modifier = modifier.clickable {  onClick() }
             .width(100.dp)
             .clip(MaterialTheme.shapes.medium),
         value = text,
+        readOnly = readOnly,
+        enabled = enabled,
         placeholder = {
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -93,15 +102,19 @@ fun SecretCodeInput(
                     .copy(textAlign = TextAlign.Center)
             )
         },
+        visualTransformation = PasswordVisualTransformation(),
         singleLine = true,
         textStyle = textStyle.copy(fontSize = fontSize),
         colors = TextFieldDefaults.textFieldColors(
+            cursorColor = MaterialTheme.colors.onPrimary,
             focusedIndicatorColor = Color.Unspecified,
             unfocusedIndicatorColor = Color.Unspecified,
             disabledIndicatorColor = Color.Unspecified
         ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
         onValueChange = {
+
             if (it.length <= maxLength && it.isDigitsOnly()) {
                 onValueChange(it)
             }
@@ -121,7 +134,8 @@ fun BigSecretCodeInput(
     placeholder: String = "******",
     textColor: Color = MaterialTheme.colors.onPrimary,
     maxLength: Int = 10,
-    onValueChange: (String) -> Unit
+    readOnly: Boolean = false,
+    onValueChange: (String) -> Unit = {}
 ) {
 
     TextField(
@@ -140,6 +154,7 @@ fun BigSecretCodeInput(
                     .copy(textAlign = TextAlign.Center)
             )
         },
+        readOnly = readOnly,
         singleLine = true,
         textStyle = textStyle.copy(fontSize = fontSize, color = textColor),
         colors = TextFieldDefaults.textFieldColors(
