@@ -38,6 +38,7 @@ fun TimeInput(
     maxLength: Int = 2,
     readOnly: Boolean = false,
     enabled: Boolean = true,
+    isError: Boolean = false,
     onClick: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
@@ -46,7 +47,8 @@ fun TimeInput(
     TextField(
         modifier = modifier.clickable {  onClick() }
             .width(100.dp)
-            .clip(MaterialTheme.shapes.medium),
+            .clip(MaterialTheme.shapes.medium)
+        ,
         value = text,
         readOnly = readOnly,
         enabled = enabled,
@@ -65,6 +67,7 @@ fun TimeInput(
         singleLine = true,
         textStyle = textStyle.copy(fontSize = fontSize),
         colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = if(isError) MaterialTheme.colors.onError else MaterialTheme.colors.primary,
             focusedIndicatorColor = Color.Unspecified,
             unfocusedIndicatorColor = Color.Unspecified,
             disabledIndicatorColor = Color.Unspecified
@@ -91,6 +94,7 @@ fun SecretCodeInput(
     text: String,
     fontSize: TextUnit = dimensionResource(id = R.dimen.input_text_font_size).value.sp,
     placeholder: String = "********",
+    isError: Boolean = false,
     maxLength: Int = 10,
     onValueChange: (String) -> Unit
 ) {
@@ -115,6 +119,7 @@ fun SecretCodeInput(
         singleLine = true,
         textStyle = textStyle.copy(fontSize = fontSize),
         colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = if(isError) MaterialTheme.colors.onError else MaterialTheme.colors.primary,
             cursorColor = MaterialTheme.colors.onPrimary,
             focusedIndicatorColor = Color.Unspecified,
             unfocusedIndicatorColor = Color.Unspecified,
