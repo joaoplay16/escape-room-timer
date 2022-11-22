@@ -46,7 +46,7 @@ fun TimeInput(
     val keyboardController = LocalSoftwareKeyboardController.current
     TextField(
         modifier = modifier.clickable {  onClick() }
-            .width(100.dp)
+            .size(dimensionResource(id = R.dimen.input_time_size))
             .clip(MaterialTheme.shapes.medium)
         ,
         value = text,

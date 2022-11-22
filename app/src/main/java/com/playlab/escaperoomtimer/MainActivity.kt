@@ -15,7 +15,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -45,7 +47,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            EscapeRoomTimerTheme {
+            EscapeRoomTimerTheme (darkTheme = true){
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -253,6 +255,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             TextLabel(
                                 modifier = Modifier.padding(end = 10.dp),
+                                fontSize = dimensionResource(id = R.dimen.screen_title_font_size).value.sp,
                                 text = timeString
                             )
                             ActionButton(

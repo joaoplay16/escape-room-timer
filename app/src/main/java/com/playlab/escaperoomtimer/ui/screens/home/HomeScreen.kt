@@ -15,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.playlab.escaperoomtimer.ui.DevicesPreviews
@@ -23,6 +25,7 @@ import com.playlab.escaperoomtimer.ui.components.CountDownTimer
 import com.playlab.escaperoomtimer.ui.components.Keypad
 import com.playlab.escaperoomtimer.ui.components.TextLabel
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
+import com.playlab.escaperoomtimer.R
 
 @Composable
 fun HomeScreen(
@@ -64,7 +67,10 @@ fun HomeScreen(
                 modifier = modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(top = 60.dp)
+                    .padding(
+                        top = dimensionResource(id = R.dimen.big_timer_top_padding),
+                        bottom = dimensionResource(id = R.dimen.big_timer_bottom_padding)
+                    )
                     .weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -83,12 +89,12 @@ fun HomeScreen(
                 if(isDefused){
                     TextLabel(
                         text = "Defused",
-                        fontSize = 48.sp,
+                        fontSize = dimensionResource(id = R.dimen.is_defused_text_font_size).value.sp,
                         textColor = MaterialTheme.colors.onPrimary,
                         textStyle = MaterialTheme.typography.h1
                     )
                 }
-                Spacer(modifier = Modifier.padding(vertical = 10.dp))
+                Spacer(modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.keypad_row_gap)))
 
                 if (orientation == Configuration.ORIENTATION_PORTRAIT){
 

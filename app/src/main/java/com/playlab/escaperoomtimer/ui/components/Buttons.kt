@@ -1,15 +1,14 @@
 package com.playlab.escaperoomtimer.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -26,7 +25,7 @@ import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 
 @Composable
 fun KeypadButton(
-    modifier: Modifier = Modifier.size(dimensionResource(id = R.dimen.keypad_button_size)),
+    modifier: Modifier = Modifier,
     buttonText: String,
     color: Color = MaterialTheme.colors.onSurface,
     fontSize: TextUnit = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
@@ -40,19 +39,26 @@ fun KeypadButton(
     onClick: (String) -> Unit = {}
 ) {
     Button(
-        modifier = modifier.clip(shape),
+        modifier = modifier
+            .size(dimensionResource(id = R.dimen.keypad_button_size))
+            .clip(shape),
         onClick = { onClick( buttonText ) }
     ) {
-        Text(
-            modifier = Modifier.padding(paddingValues),
-            text = buttonText,
-            color = color,
-            style = textStyle,
-            textAlign = TextAlign.Center,
-            fontSize = fontSize,
-            fontWeight = fontWeight,
-            maxLines = 1
-        )
+        Box(
+            modifier  = Modifier.fillMaxSize(),
+            Alignment.Center
+        ){
+            Text(
+                text = buttonText,
+                color = color,
+                style = textStyle,
+                textAlign = TextAlign.Center,
+                fontSize = fontSize,
+                fontWeight = fontWeight,
+                maxLines = 1
+            )
+        }
+
     }
 }
 

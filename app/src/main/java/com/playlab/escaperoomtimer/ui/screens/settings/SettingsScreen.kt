@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.playlab.escaperoomtimer.R
@@ -67,7 +68,9 @@ fun SettingsScreen(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "BACK"
                     )
-                    TextLabel(text = "Settings", fontSize = 36.sp)
+                    TextLabel(
+                        text = "Settings",
+                        fontSize = dimensionResource(id = R.dimen.screen_title_font_size).value.sp)
                 }
 
                     countDownComposable()
@@ -167,7 +170,11 @@ fun SettingsScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextLabel(text = "Ticking sound")
-                    SettingsCheckBox(checked = enableTickingSound, onCheckChanged = onEnableTickingSoundChange)
+                    SettingsCheckBox(
+
+                        checked = enableTickingSound,
+                        onCheckChanged = onEnableTickingSoundChange
+                    )
                 }
 
                 if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -205,7 +212,7 @@ fun SettingsScreen(
 @DevicesPreviews
 @Composable
 fun PreviewSettingsScreen() {
-    EscapeRoomTimerTheme() {
+    EscapeRoomTimerTheme(darkTheme = true) {
         Surface {
             var timerHour by remember { mutableStateOf("") }
             var timerMinute by remember { mutableStateOf("") }
@@ -234,6 +241,7 @@ fun PreviewSettingsScreen() {
                     ) {
                         TextLabel(
                             modifier = Modifier.padding(end = 10.dp),
+                            fontSize = dimensionResource(id = R.dimen.screen_title_font_size).value.sp,
                             text = "00:00:00"
                         )
                         ActionButton(

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="check_box_scale" type="dimen" format="float">1.3</item>
+
     <dimen name="action_button_horizontal_padding">100dp</dimen>
     <dimen name="action_button_vertical_padding">15dp</dimen>
 
-    <dimen name="input_time_size">120dp</dimen>
+    <dimen name="input_time_size">80dp</dimen>
     <dimen name="input_secret_code_size">200dp</dimen>
     <dimen name="big_input_secret_code_size">300dp</dimen>
     <dimen name="keypad_button_horizontal_padding">14dp</dimen>
@@ -14,11 +16,15 @@
     <dimen name="text_label_vertical_padding">15dp</dimen>
     <dimen name="text_label_top_padding">15dp</dimen>
     <dimen name="text_label_bottom_padding">26dp</dimen>
+    <dimen name="big_timer_top_padding">0dp</dimen>
+    <dimen name="big_timer_bottom_padding">10dp</dimen>
 
+    <dimen name="screen_title_font_size">36sp</dimen>
     <dimen name="text_label_font_size">24sp</dimen>
     <dimen name="input_text_font_size">36sp</dimen>
     <dimen name="timer_font_size">96sp</dimen>
     <dimen name="keypad_button_font_size">35sp</dimen>
+    <dimen name="keypad_button_ok_font_size">35sp</dimen>
     <dimen name="big_secret_code_font_size">96sp</dimen>
     <dimen name="secret_code_font_size">96sp</dimen>
     <dimen name="action_button_font_size">15sp</dimen>
@@ -26,4 +32,6 @@
     <dimen name="small_text_font_size">24sp</dimen>
     <dimen name="label_font_size">24sp</dimen>
     <dimen name="title_font_size">24sp</dimen>
+    <dimen name="is_defused_text_font_size">48sp</dimen>
+
 </resources>

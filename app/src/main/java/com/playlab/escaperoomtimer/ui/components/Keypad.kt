@@ -91,7 +91,6 @@ fun Keypad(
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
             KeypadButton(
-                fontSize = 24.sp,
                 buttonText = "OK",
                 onClick = { onOkClick() }
             )
