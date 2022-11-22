@@ -6,8 +6,11 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.playlab.escaperoomtimer.R
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 
 @Composable
@@ -18,13 +21,13 @@ fun Keypad(
     onOkClick: () -> Unit = {}
 ) {
     Column(
-        modifier = modifier.width(300.dp).height(300.dp),
+        modifier = modifier.sizeIn(maxWidth = 400.dp, maxHeight = 600.dp),
         verticalArrangement =  Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(0.95f),
             horizontalArrangement = Arrangement.SpaceEvenly) {
             KeypadButton(
                 buttonText = "1",
@@ -39,9 +42,10 @@ fun Keypad(
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
         }
+        Spacer(modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.keypad_row_gap)))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(0.95f),
             horizontalArrangement = Arrangement.SpaceEvenly) {
             KeypadButton(
                 buttonText = "4",
@@ -56,9 +60,10 @@ fun Keypad(
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
         }
+        Spacer(modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.keypad_row_gap)))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(0.95f),
             horizontalArrangement = Arrangement.SpaceEvenly) {
             KeypadButton(
                 buttonText = "7",
@@ -73,9 +78,9 @@ fun Keypad(
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
         }
-
+        Spacer(modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.keypad_row_gap)))
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(0.95f),
             horizontalArrangement = Arrangement.SpaceEvenly) {
             KeypadButton(
                 buttonText = "<",
@@ -86,6 +91,7 @@ fun Keypad(
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
             KeypadButton(
+                fontSize = 24.sp,
                 buttonText = "OK",
                 onClick = { onOkClick() }
             )
