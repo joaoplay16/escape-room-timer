@@ -1,17 +1,20 @@
 package com.playlab.escaperoomtimer.ui.components
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -23,6 +26,7 @@ import androidx.core.text.isDigitsOnly
 import com.playlab.escaperoomtimer.R
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TimeInput(
     modifier: Modifier = Modifier,
@@ -38,7 +42,7 @@ fun TimeInput(
     onValueChange: (String) -> Unit = {}
 ) {
 
-
+    val keyboardController = LocalSoftwareKeyboardController.current
     TextField(
         modifier = modifier.clickable {  onClick() }
             .width(100.dp)
@@ -65,7 +69,11 @@ fun TimeInput(
             unfocusedIndicatorColor = Color.Unspecified,
             disabledIndicatorColor = Color.Unspecified
         ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Decimal,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
         onValueChange = {
             if (it.length <= maxLength && it.isDigitsOnly()) {
                 onValueChange(it)
@@ -74,6 +82,7 @@ fun TimeInput(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SecretCodeInput(
     modifier: Modifier = Modifier,
@@ -85,7 +94,7 @@ fun SecretCodeInput(
     maxLength: Int = 10,
     onValueChange: (String) -> Unit
 ) {
-
+    val keyboardController = LocalSoftwareKeyboardController.current
     TextField(
         modifier = modifier
             .width(dimensionResource(id = R.dimen.input_secret_code_size))
@@ -112,9 +121,12 @@ fun SecretCodeInput(
             disabledIndicatorColor = Color.Unspecified
         ),
 
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.NumberPassword,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
         onValueChange = {
-
             if (it.length <= maxLength && it.isDigitsOnly()) {
                 onValueChange(it)
             }
@@ -122,6 +134,7 @@ fun SecretCodeInput(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BigSecretCodeInput(
     modifier: Modifier = Modifier,
@@ -137,6 +150,7 @@ fun BigSecretCodeInput(
     readOnly: Boolean = false,
     onValueChange: (String) -> Unit = {}
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     TextField(
         modifier = modifier
@@ -163,7 +177,11 @@ fun BigSecretCodeInput(
             unfocusedIndicatorColor = Color.Unspecified,
             disabledIndicatorColor = Color.Unspecified
         ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
         onValueChange = {
             if (it.length <= maxLength && it.isDigitsOnly()) {
                 onValueChange(it)
