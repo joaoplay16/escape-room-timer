@@ -9,17 +9,19 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.playlab.escaperoomtimer.ui.DevicesPreviews
 import com.playlab.escaperoomtimer.ui.components.BigSecretCodeInput
 import com.playlab.escaperoomtimer.ui.components.CountDownTimer
 import com.playlab.escaperoomtimer.ui.components.Keypad
+import com.playlab.escaperoomtimer.ui.components.TextLabel
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 
 @Composable
@@ -29,6 +31,7 @@ fun HomeScreen(
     timeUntilFinish: Long = 0,
     timerText: String = "00:00:00",
     code: String = "",
+    isDefused: Boolean = false,
     onCodeChange: (String) -> Unit = {},
     onKeypadDelete: () -> Unit ={},
     onKeypadOk: () -> Unit ={}
@@ -47,7 +50,7 @@ fun HomeScreen(
                         .clickable {
                             onSettingsClick()
                         },
-                    imageVector = Icons.Default.Menu,
+                    imageVector = Icons.Default.Settings,
                     contentDescription = ""
                 )
             }
@@ -77,7 +80,15 @@ fun HomeScreen(
                     maxLength = 8
                 )
 
-                Spacer(modifier = Modifier.size(0.dp))
+                if(isDefused){
+                    TextLabel(
+                        text = "Defused",
+                        fontSize = 48.sp,
+                        textColor = MaterialTheme.colors.onPrimary,
+                        textStyle = MaterialTheme.typography.h1
+                    )
+                }
+                Spacer(modifier = Modifier.padding(vertical = 10.dp))
 
                 if (orientation == Configuration.ORIENTATION_PORTRAIT){
 
@@ -118,7 +129,7 @@ fun HomeScreen(
 fun PreviewHomeScreen() {
     EscapeRoomTimerTheme() {
         Surface {
-            HomeScreen()
+            HomeScreen(isDefused = true)
         }
     }
 }
