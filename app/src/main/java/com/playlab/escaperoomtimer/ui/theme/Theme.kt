@@ -11,7 +11,8 @@ private val DarkColorPalette = darkColors(
     primaryVariant = Back700,
     secondary = Back600,
     onPrimary = Green100,
-    onSecondary = Green700
+    onSecondary = Green700,
+    onError = DarkRed
 )
 
 private val LightColorPalette = lightColors(
