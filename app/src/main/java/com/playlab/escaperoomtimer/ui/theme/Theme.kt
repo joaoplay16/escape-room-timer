@@ -5,7 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 private val DarkColorPalette = darkColors(
     primary = Back900,
     primaryVariant = Back700,
@@ -40,6 +40,9 @@ fun EscapeRoomTimerTheme(
     } else {
         LightColorPalette
     }
+
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(colors.surface)
 
     MaterialTheme(
         colors = colors,
