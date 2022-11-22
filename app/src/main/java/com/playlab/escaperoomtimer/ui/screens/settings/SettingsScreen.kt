@@ -39,6 +39,10 @@ fun SettingsScreen(
     onCodeChange: (String) -> Unit,
     onTimerChange: (Int, Int, Int) -> Unit,
     startCountDownTimer: () -> Unit = {},
+    showDialog: Boolean = false,
+    onDialogOkClick: () -> Unit = {},
+    onDialogCancelClick: () -> Unit = {},
+    onDialogDismiss: () -> Unit = {},
     countDownComposable: @Composable RowScope.() -> Unit
 ) {
     Scaffold(
@@ -78,6 +82,17 @@ fun SettingsScreen(
 
         val orientation = LocalConfiguration.current.orientation
 
+
+        if (showDialog){
+            TimerDialog(
+                title = "Stop current timer?",
+                onDismiss =  onDialogDismiss ,
+                onOkClick = onDialogOkClick,
+                onCancelClick =  onDialogCancelClick
+            )
+        }
+
+
         Row(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = modifier
@@ -88,11 +103,11 @@ fun SettingsScreen(
                     .verticalScroll(rememberScrollState()),
             ) {
 
-                var showDialog by remember{ mutableStateOf(false) }
+                var showTimePickerDialog by remember{ mutableStateOf(false) }
 
                 TimePickerDialog(
-                    showDialog = showDialog,
-                    onDismissRequest = { showDialog = false},
+                    showDialog = showTimePickerDialog,
+                    onDismissRequest = { showTimePickerDialog = false},
                     onTimeSelected = { hour, minute ->
                         onTimerChange(hour, minute, 0)
                     })
@@ -104,7 +119,7 @@ fun SettingsScreen(
                         readOnly = true,
                         enabled = false,
                         onClick = {
-                            showDialog = true
+                            showTimePickerDialog = true
                         }
                     )
                     TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "h")
@@ -113,7 +128,7 @@ fun SettingsScreen(
                         readOnly = true,
                         enabled = false,
                         onClick = {
-                            showDialog = true
+                            showTimePickerDialog = true
                         }
                     )
                     TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "m")
@@ -122,7 +137,7 @@ fun SettingsScreen(
                         readOnly = true,
                         enabled = false,
                         onClick = {
-                            showDialog = true
+                            showTimePickerDialog = true
                         }
                     )
                     TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "s")
@@ -132,7 +147,9 @@ fun SettingsScreen(
                 Row(verticalAlignment = Alignment.Bottom) {
                     SecretCodeInput(
                         text = defuseCode,
-                        onValueChange = { onCodeChange(it) }
+                        maxLength = 8,
+                        onValueChange = { onCodeChange(it) },
+//                        isError = defuseCode.isEmpty()
                     )
                 }
 
@@ -159,7 +176,10 @@ fun SettingsScreen(
                             .fillMaxWidth()
                             .padding(top = 50.dp), horizontalArrangement = Arrangement.Center
                     ) {
-                        ActionButton(buttonText = "START", onClick = startCountDownTimer)
+                        ActionButton(buttonText = "START", onClick = {
+
+                            startCountDownTimer()
+                        })
                     }
                 }
             }
