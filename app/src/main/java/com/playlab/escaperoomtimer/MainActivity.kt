@@ -4,15 +4,17 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -37,6 +39,8 @@ class MainActivity : ComponentActivity() {
 
     var timer: CountDownTimer? = null
 
+    val timerViewModel: TimerViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,7 +52,7 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     DefaultNavHost(
-
+                        timerViewModel = timerViewModel
                     )
                 }
             }
@@ -59,35 +63,50 @@ class MainActivity : ComponentActivity() {
     private fun startTimer(timerViewModel: TimerViewModel){
 
         val timeUntilFinishInMillis by timerViewModel.timeUntilFinishInMillis
+        val startTimeInMillis by timerViewModel.startTimeInMillis
         val tickSoundEnabled by timerViewModel.tickSoundEnabled
+        if(startTimeInMillis > 0) {
+            timer = object : CountDownTimer(timeUntilFinishInMillis, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
 
-        timer = object: CountDownTimer(timeUntilFinishInMillis, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
+                    if (tickSoundEnabled) playSound(R.raw.beep)
 
-                if (tickSoundEnabled) playSound(R.raw.beep)
+                    val timerHour =
+                        floor((millisUntilFinished.toDouble() / (1000 * 60 * 60)) % 24).toLong()
+                    val timerMinute =
+                        floor((millisUntilFinished.toDouble() / (1000 * 60)) % 60).toLong()
+                    val timerSecond = floor((millisUntilFinished.toDouble() / 1000) % 60).toLong()
 
-                val timerHour = floor((millisUntilFinished.toDouble() / (1000 * 60 * 60)) % 24).toLong()
-                val timerMinute = floor((millisUntilFinished.toDouble() / (1000 * 60)) % 60).toLong()
-                val timerSecond = floor((millisUntilFinished.toDouble() / 1000) % 60).toLong()
+                    timerViewModel.setTimeHour(timerHour)
+                    timerViewModel.setTimeMinute(timerMinute)
+                    timerViewModel.setTimeSecond(timerSecond)
 
-                timerViewModel.setTimeHour(timerHour)
-                timerViewModel.setTimeMinute(timerMinute)
-                timerViewModel.setTimeSecond(timerSecond)
+                    timerViewModel.setTimeUntilFinishInMillis(millisUntilFinished)
+                }
 
-                timerViewModel.setTimeUntilFinishInMillis(millisUntilFinished)
-            }
-
-            override fun onFinish() {
-                timerViewModel.resetTimer()
-                playSound(R.raw.bomb_explosion)
-                cancel()
-            }
-        }.start()
+                override fun onFinish() {
+                    timerViewModel.resetTimer()
+                    timerViewModel.setStartTimeInMillis(0L)
+                    playSound(R.raw.bomb_explosion)
+                    cancel()
+                }
+            }.start()
+        }
     }
 
     private fun stopTimer(){
         timer?.cancel()
         timer = null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopTimer()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startTimer(timerViewModel)
     }
 
     fun playSound(resId: Int){
@@ -101,7 +120,7 @@ class MainActivity : ComponentActivity() {
                 mp.prepare()
                 mp.start()
             }catch (e: Exception){
-                e.printStackTrace();
+                e.printStackTrace()
             }
         }
     }
@@ -115,10 +134,12 @@ class MainActivity : ComponentActivity() {
     ) {
 
 
+        var isDefused by remember{ mutableStateOf(false) }
         val defuseCode by timerViewModel.defuseCode
         val tickSoundEnabled by timerViewModel.tickSoundEnabled
         val timeString = timerViewModel.getTimeString()
         val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
+        val startTimeInMillis by timerViewModel.startTimeInMillis
         val penalty by timerViewModel.penalty
 
         val code by timerViewModel.code
@@ -132,6 +153,7 @@ class MainActivity : ComponentActivity() {
                 HomeScreen(
                     timerText = timeString,
                     timeUntilFinish = timeUntilFinish,
+                    isDefused = isDefused,
                     code = code,
                     onCodeChange = { digit ->
                         val c = StringBuilder(code).append(digit).toString()
@@ -142,22 +164,20 @@ class MainActivity : ComponentActivity() {
                     },
                     onKeypadOk = {
                         val hasDefused = timerViewModel.hasDefused()
-
-                        val c = timerViewModel.code.value
-                        val dc = timerViewModel.defuseCode.value
-
-                        Log.d("CODE", "code $c defuseCode $dc" )
-
+                        isDefused = hasDefused
                         if(timeUntilFinish > 0){
                             if(hasDefused){
-                                playSound(R.raw.bomb_has_been_defused)
-                                timerViewModel.resetTimer()
                                 stopTimer()
+                                timerViewModel.resetTimer()
+                                playSound(R.raw.bomb_has_been_defused)
                             }else{
                                 playSound(R.raw.error)
                                 stopTimer()
                                 timerViewModel.setCode("")
-                                timerViewModel.setTimeUntilFinishInMillis(timeUntilFinish - (penalty.toInt() * 1000L))
+
+                                var timeWithPenalty = timeUntilFinish - (penalty.ifEmpty { "0" }.toInt() * 1000L)
+                                timeWithPenalty = if( timeWithPenalty >= 0) timeWithPenalty else 0
+                                timerViewModel.setTimeUntilFinishInMillis(timeWithPenalty)
                                 startTimer(timerViewModel)
                             }
                         }
@@ -174,6 +194,9 @@ class MainActivity : ComponentActivity() {
                 var textTimerMinute by remember { mutableStateOf("") }
                 var textTimerSecond by remember { mutableStateOf("") }
 
+                val context = LocalContext.current
+
+                var showDialog by remember{ mutableStateOf(false) }
 
                 SettingsScreen(
                     timerHour = getLeftPaddedNumberString(textTimerHour.ifEmpty { "0" }.toInt()),
@@ -198,11 +221,29 @@ class MainActivity : ComponentActivity() {
                         timerViewModel.setStartTimeInMillis(getTimeInMillis(hour, minute, second))
                     },
                     startCountDownTimer = {
-                        stopTimer()
-                        if(timeUntilFinish > 0) startTimer(timerViewModel)
+                        isDefused = false
+                        if(defuseCode.isEmpty()){
+                            Toast.makeText(context, "Fill defuse code!", Toast.LENGTH_LONG).show()
+                            return@SettingsScreen
+                        }
+                        if(timeUntilFinish > 0) {
+                            showDialog = true
+                            return@SettingsScreen
+                        }
+//                        stopTimer()
+                        timerViewModel.setTimeUntilFinishInMillis(startTimeInMillis)
+                        startTimer(timerViewModel)
                         navController.popBackStack()
                     },
                     onArrowBackPressed = { navController.popBackStack() },
+                    showDialog = showDialog,
+                    onDialogOkClick = {
+                        timerViewModel.resetTimer()
+                        stopTimer()
+                        showDialog = false
+                    },
+                    onDialogCancelClick = { showDialog = false },
+                    onDialogDismiss = { showDialog = false},
                     countDownComposable = {
 
                         Row(
@@ -217,8 +258,9 @@ class MainActivity : ComponentActivity() {
                             ActionButton(
                                 buttonText = "stop",
                                 onClick = {
-                                    timerViewModel.resetTimer()
-                                    stopTimer()
+                                      if(timeUntilFinish > 0) showDialog = true
+//                                    timerViewModel.resetTimer()
+//                                    stopTimer()
                                 },
                                 paddingValues = PaddingValues(horizontal = 10.dp, vertical = 0.dp)
                             )
