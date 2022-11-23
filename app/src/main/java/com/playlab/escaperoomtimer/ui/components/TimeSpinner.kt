@@ -34,7 +34,7 @@ fun TimeSpinner(
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { onExpand(false) },
-            modifier = modifier.fillMaxHeight(0.5f)   // delete this modifier and use .wrapContentWidth() if you would like to wrap the dropdown menu around the content
+            modifier = modifier.fillMaxHeight(0.38f)
         ) {
             timeRange.forEach { entry ->
                 DropdownMenuItem(
@@ -46,7 +46,7 @@ fun TimeSpinner(
                     Text(
                         text = getLeftPaddedNumberString(entry),
                         modifier = Modifier
-                            .wrapContentWidth()  //optional instad of fillMaxWidth
+                            .wrapContentWidth()
                     )
                 }
             }
