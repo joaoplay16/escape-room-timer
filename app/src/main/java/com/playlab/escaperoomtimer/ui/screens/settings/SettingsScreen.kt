@@ -17,9 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.isDigitsOnly
 import com.playlab.escaperoomtimer.R
 import com.playlab.escaperoomtimer.ui.DevicesPreviews
 import com.playlab.escaperoomtimer.ui.components.*
@@ -85,6 +85,7 @@ fun SettingsScreen(
 
         val orientation = LocalConfiguration.current.orientation
 
+        var isSecondsSpinnerExpanded by remember { mutableStateOf(false) }
 
         if (showDialog){
             TimerDialog(
@@ -112,7 +113,9 @@ fun SettingsScreen(
                     showDialog = showTimePickerDialog,
                     onDismissRequest = { showTimePickerDialog = false},
                     onTimeSelected = { hour, minute ->
-                        onTimerChange(hour, minute, 0)
+                        val second = if( timerSecond.run{ isNullOrEmpty() || !isDigitsOnly()} )
+                            0 else timerSecond.toInt()
+                        onTimerChange(hour, minute, second)
                     })
 
                 TextLabel( Modifier.padding(vertical =labelVerticalPadding),text = "Timer")
@@ -126,6 +129,7 @@ fun SettingsScreen(
                         }
                     )
                     TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "h")
+
                     TimeInput(
                         text = timerMinute,
                         readOnly = true,
@@ -135,13 +139,15 @@ fun SettingsScreen(
                         }
                     )
                     TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "m")
-                    TimeInput(
-                        text = timerSecond,
-                        readOnly = true,
-                        enabled = false,
-                        onClick = {
-                            showTimePickerDialog = true
-                        }
+
+                    TimeSpinner(
+                        timeRange = 0 .. 59,
+                        expanded = isSecondsSpinnerExpanded,
+                        onExpand = { isSecondsSpinnerExpanded = it},
+                        selectedValue = timerSecond.toInt(),
+                        onValueSelected = { second ->
+                            onTimerChange(timerHour.toInt(), timerMinute.toInt(), second)
+                            },
                     )
                     TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "s")
                 }
@@ -163,13 +169,10 @@ fun SettingsScreen(
                 }
 
                 Row(
-                    Modifier.padding(
-                        top = labelTopPadding,
-                        bottom = labelHorizontalPadding
-                    ),
+
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextLabel(text = "Ticking sound")
+                    TextLabel( Modifier.padding(top = labelTopPadding, bottom = labelHorizontalPadding), text = "Ticking sound")
                     SettingsCheckBox(
 
                         checked = enableTickingSound,

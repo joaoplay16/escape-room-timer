@@ -218,7 +218,7 @@ class MainActivity : ComponentActivity() {
                     onTimerChange = { hour, minute, second ->
                         textTimerHour = hour.toString()
                         textTimerMinute = minute.toString()
-                        textTimerSecond = "00"
+                        textTimerSecond = second.toString()
 
                         timerViewModel.setStartTimeInMillis(getTimeInMillis(hour, minute, second))
                     },
