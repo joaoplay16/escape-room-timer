@@ -43,11 +43,12 @@ fun TimeSpinner(
                         onExpand(false)
                     }
                 ){
-                    Text(
-                        text = getLeftPaddedNumberString(entry),
-                        modifier = Modifier
-                            .wrapContentWidth()
-                    )
+//                    Text(
+//                        text = getLeftPaddedNumberString(entry),
+//                        modifier = Modifier
+//                            .wrapContentWidth()
+//                    )
+                    TextLabel(text = getLeftPaddedNumberString(entry))
                 }
             }
         }
