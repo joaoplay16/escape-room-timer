@@ -171,6 +171,7 @@ class MainActivity : ComponentActivity() {
                             if(hasDefused){
                                 stopTimer()
                                 timerViewModel.resetTimer()
+                                timerViewModel.setStartTimeInMillis(0)
                                 playSound(R.raw.bomb_has_been_defused)
                             }else{
                                 playSound(R.raw.error)
