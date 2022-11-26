@@ -1,6 +1,7 @@
 package com.playlab.escaperoomtimer
 
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -36,6 +37,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.floor
+
 
 class MainActivity : ComponentActivity() {
 
@@ -112,12 +114,18 @@ class MainActivity : ComponentActivity() {
     }
 
     fun playSound(resId: Int){
+        val context = this@MainActivity
         CoroutineScope(Dispatchers.IO).launch {
             val mp = MediaPlayer()
 
             try{
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    mp.setDataSource(this@MainActivity.resources.openRawResourceFd(resId))
+                    mp.setDataSource(context.resources.openRawResourceFd(resId))
+                }else{
+                    val uri: Uri = Uri.parse(
+                        "android.resource://${context.packageName}/$resId"
+                    )
+                    mp.setDataSource(context, uri)
                 }
                 mp.prepare()
                 mp.start()
