@@ -1,5 +1,8 @@
 package com.playlab.escaperoomtimer.util
 
+import com.playlab.escaperoomtimer.util.Constants.ONE_HOUR
+import com.playlab.escaperoomtimer.util.Constants.ONE_MINUTE
+import com.playlab.escaperoomtimer.util.Constants.ONE_SECOND
 import java.util.*
 import kotlin.math.floor
 
@@ -21,10 +24,6 @@ object TimeUtil {
     }
 
     fun getTimeInMillis(hour: Int = 0, minutes: Int = 0, second: Int = 0): Long {
-        val ONE_SECOND = 1_000L
-        val ONE_MINUTE = 60 * ONE_SECOND
-        val ONE_HOUR = 60 * ONE_MINUTE
-
         val hourInMillis =  hour * ONE_HOUR
         val minutesInMillis = minutes * ONE_MINUTE
         val secondsInMillis = second * ONE_SECOND
