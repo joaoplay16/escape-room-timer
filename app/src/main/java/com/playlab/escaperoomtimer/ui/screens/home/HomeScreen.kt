@@ -11,33 +11,31 @@ import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.playlab.escaperoomtimer.R
 import com.playlab.escaperoomtimer.ui.DevicesPreviews
 import com.playlab.escaperoomtimer.ui.components.BigSecretCodeInput
 import com.playlab.escaperoomtimer.ui.components.CountDownTimer
 import com.playlab.escaperoomtimer.ui.components.Keypad
 import com.playlab.escaperoomtimer.ui.components.TextLabel
+import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
-import com.playlab.escaperoomtimer.R
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    timerViewModel: TimerViewModel,
     onSettingsClick: () -> Unit = {},
-    timeUntilFinish: Long = 0,
-    timerText: String = "00:00:00",
-    code: String = "",
-    isDefused: Boolean = false,
-    onCodeChange: (String) -> Unit = {},
-    onKeypadDelete: () -> Unit ={},
-    onKeypadOk: () -> Unit ={}
+    onKeypadOk: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -61,6 +59,12 @@ fun HomeScreen(
     ) { paddingValues ->
 
         val orientation = LocalConfiguration.current.orientation
+
+        val isDefused by remember{ mutableStateOf(false) }
+        val timerText = timerViewModel.getTimeString()
+        val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
+
+        val code by timerViewModel.code
 
         Row(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -100,10 +104,13 @@ fun HomeScreen(
 
                     Keypad(
                         onDigitClick = { digit ->
-                            onCodeChange(digit)
+                            val c = StringBuilder(code).append(digit).toString()
+                            timerViewModel.setCode(c)
                         },
                         onOkClick = onKeypadOk,
-                        onDeleteClick = onKeypadDelete
+                        onDeleteClick = {
+                            timerViewModel.setCode(code.dropLast(1))
+                        }
                     )
                 }
             }
@@ -118,10 +125,11 @@ fun HomeScreen(
                     ) {
                     Keypad(
                         onDigitClick = { digit ->
-                            onCodeChange(digit)
+                            val c = StringBuilder(code).append(digit).toString()
+                            timerViewModel.setCode(c)
                         },
                         onOkClick = onKeypadOk,
-                        onDeleteClick = onKeypadDelete
+                        onDeleteClick = { timerViewModel.setCode(code.dropLast(1))}
                     )
                 }
             }
@@ -135,7 +143,7 @@ fun HomeScreen(
 fun PreviewHomeScreen() {
     EscapeRoomTimerTheme() {
         Surface {
-            HomeScreen(isDefused = true)
+            HomeScreen(timerViewModel = TimerViewModel())
         }
     }
 }

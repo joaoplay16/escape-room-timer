@@ -19,7 +19,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -140,19 +139,16 @@ class MainActivity : ComponentActivity() {
         modifier: Modifier = Modifier,
         navController: NavHostController = rememberNavController(),
         startDestination: String = ScreenRoutes.Home.name,
-        timerViewModel: TimerViewModel = viewModel()
+        timerViewModel: TimerViewModel
     ) {
 
-
-        var isDefused by remember{ mutableStateOf(false) }
+        var isDefused = timerViewModel.hasDefused()
+        val startTimeInMillis by timerViewModel.startTimeInMillis
+        val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
+        val penalty by timerViewModel.penalty
         val defuseCode by timerViewModel.defuseCode
         val tickSoundEnabled by timerViewModel.tickSoundEnabled
-        val timeString = timerViewModel.getTimeString()
-        val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
-        val startTimeInMillis by timerViewModel.startTimeInMillis
-        val penalty by timerViewModel.penalty
-
-        val code by timerViewModel.code
+        val timerText = timerViewModel.getTimeString()
 
         NavHost(
             modifier = modifier,
@@ -161,22 +157,10 @@ class MainActivity : ComponentActivity() {
         ){
             composable(ScreenRoutes.Home.name){
                 HomeScreen(
-                    timerText = timeString,
-                    timeUntilFinish = timeUntilFinish,
-                    isDefused = isDefused,
-                    code = code,
-                    onCodeChange = { digit ->
-                        val c = StringBuilder(code).append(digit).toString()
-                        timerViewModel.setCode(c)
-                                   },
-                    onKeypadDelete = {
-                        timerViewModel.setCode(code.dropLast(1))
-                    },
+                    timerViewModel = timerViewModel,
                     onKeypadOk = {
-                        val hasDefused = timerViewModel.hasDefused()
-                        isDefused = hasDefused
                         if(timeUntilFinish > 0){
-                            if(hasDefused){
+                            if(isDefused){
                                 stopTimer()
                                 timerViewModel.resetTimer()
                                 timerViewModel.setStartTimeInMillis(0)
@@ -192,7 +176,6 @@ class MainActivity : ComponentActivity() {
                                 startTimer(timerViewModel)
                             }
                         }
-
                     },
                     onSettingsClick = {
                         navController.navigate(ScreenRoutes.Settings.name)
@@ -265,7 +248,7 @@ class MainActivity : ComponentActivity() {
                             TextLabel(
                                 modifier = Modifier.padding(end = 10.dp),
                                 fontSize = dimensionResource(id = R.dimen.screen_title_font_size).value.sp,
-                                text = timeString
+                                text = timerText
                             )
                             ActionButton(
                                 buttonText = "stop",
