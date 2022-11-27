@@ -16,7 +16,7 @@
     <dimen name="text_label_vertical_padding">15dp</dimen>
     <dimen name="text_label_top_padding">15dp</dimen>
     <dimen name="text_label_bottom_padding">26dp</dimen>
-    <dimen name="big_timer_top_padding">0dp</dimen>
+    <dimen name="big_timer_top_padding">60dp</dimen>
     <dimen name="big_timer_bottom_padding">10dp</dimen>
 
     <dimen name="screen_title_font_size">36sp</dimen>

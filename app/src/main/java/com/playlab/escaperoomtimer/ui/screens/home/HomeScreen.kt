@@ -68,12 +68,12 @@ fun HomeScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .padding(
-                        top = dimensionResource(id = R.dimen.big_timer_top_padding),
+                        top =  dimensionResource(id = R.dimen.big_timer_top_padding),
                         bottom = dimensionResource(id = R.dimen.big_timer_bottom_padding)
                     )
                     .weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Top
             ) {
                 CountDownTimer(
                     time = timerText,
@@ -112,9 +112,9 @@ fun HomeScreen(
                 Column(
                     Modifier
                         .fillMaxSize()
-                        .padding(top = 60.dp)
+                        .padding(top =  dimensionResource(id = R.dimen.big_timer_top_padding))
                         .weight(1f),
-                    verticalArrangement = Arrangement.Center,
+                    verticalArrangement = Arrangement.Top,
                     ) {
                     Keypad(
                         onDigitClick = { digit ->
