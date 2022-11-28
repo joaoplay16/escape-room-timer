@@ -66,10 +66,10 @@ class MainActivity : ComponentActivity() {
                     if (tickSoundEnabled) playSound(R.raw.beep)
 
                     val timerHour =
-                        floor((millisUntilFinished.toDouble() / (1000 * 60 * 60)) % 24).toLong()
+                        floor((millisUntilFinished.toDouble() / (1000 * 60 * 60)) % 24).toInt()
                     val timerMinute =
-                        floor((millisUntilFinished.toDouble() / (1000 * 60)) % 60).toLong()
-                    val timerSecond = floor((millisUntilFinished.toDouble() / 1000) % 60).toLong()
+                        floor((millisUntilFinished.toDouble() / (1000 * 60)) % 60).toInt()
+                    val timerSecond = floor((millisUntilFinished.toDouble() / 1000) % 60).toInt()
 
                     timerViewModel.setTimeHour(timerHour)
                     timerViewModel.setTimeMinute(timerMinute)

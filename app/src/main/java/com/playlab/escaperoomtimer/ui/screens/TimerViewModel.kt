@@ -6,12 +6,12 @@ import com.playlab.escaperoomtimer.util.TimeUtil
 
 class TimerViewModel : ViewModel() {
 
-    private var _timerHour  =  mutableStateOf(0L)
-    val timeHour = _timerHour
-    private var _timerMinute = mutableStateOf(0L)
-    val timeMinute = _timerMinute
-    private var _timerSecond = mutableStateOf(0L)
-    val timeSecond = _timerSecond
+    private var _timerHour  =  mutableStateOf(0)
+    val timerHour = _timerHour
+    private var _timerMinute = mutableStateOf(0)
+    val timerMinute = _timerMinute
+    private var _timerSecond = mutableStateOf(0)
+    val timerSecond = _timerSecond
 
     private var _startTimeInMillis  =  mutableStateOf(0L)
     val startTimeInMillis = _startTimeInMillis
@@ -47,15 +47,15 @@ class TimerViewModel : ViewModel() {
         _penalty.value = penalty
     }
 
-    fun setTimeHour(value: Long){
+    fun setTimeHour(value: Int){
         _timerHour.value = value
     }
 
-    fun setTimeMinute(value: Long){
+    fun setTimeMinute(value: Int){
         _timerMinute.value = value
     }
 
-    fun setTimeSecond(value: Long){
+    fun setTimeSecond(value: Int){
         _timerSecond.value = value
     }
 
@@ -69,9 +69,9 @@ class TimerViewModel : ViewModel() {
 
     fun getTimeString(): String {
         return TimeUtil.getFormattedTimeString(
-            timeHour.value.toInt(),
-            timeMinute.value.toInt(),
-            timeSecond.value.toInt()
+            timerHour.value,
+            timerMinute.value,
+            timerSecond.value
         )
     }
 
