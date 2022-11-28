@@ -52,7 +52,7 @@ fun SettingsScreen(
     val startTimeInMillis by timerViewModel.startTimeInMillis
     val timerText = timerViewModel.getTimeString()
     val penalty by timerViewModel.penalty
-    var isDefused = timerViewModel.hasDefused()
+    var isDefused = timerViewModel.isDefused()
     val defuseCode by timerViewModel.defuseCode
     val tickSoundEnabled by timerViewModel.tickSoundEnabled
 
@@ -214,7 +214,7 @@ fun SettingsScreen(
 
                 TextLabel( Modifier.padding(top = labelTopPadding, bottom = labelBottomPadding), text = "Penalty")
                 Row(verticalAlignment = Alignment.Bottom) {
-                    TimeInput(text = penalty, onValueChange = { timerViewModel.setPenaltyValue(it) })
+                    TimeInput(text = penalty, onValueChange = { timerViewModel.setPenaltyTime(it) })
                     TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "sec")
                 }
 
@@ -237,7 +237,7 @@ fun SettingsScreen(
                             .padding(top = 50.dp), horizontalArrangement = Arrangement.Center
                     ) {
                         ActionButton(buttonText = "START", onClick = {
-                            isDefused = false // TODO reset in view model
+                            isDefused = false
                             if(defuseCode.isEmpty()){
                                 Toast.makeText(context, "Fill defuse code!", Toast.LENGTH_LONG).show()
                                 return@ActionButton

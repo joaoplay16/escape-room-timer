@@ -133,7 +133,7 @@ class MainActivity : ComponentActivity() {
         timerViewModel: TimerViewModel
     ) {
 
-        val isDefused = timerViewModel.hasDefused()
+        val isDefused = timerViewModel.isDefused()
         val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
         val penalty by timerViewModel.penalty
 
@@ -155,7 +155,7 @@ class MainActivity : ComponentActivity() {
                             }else{
                                 playSound(R.raw.error)
                                 stopTimer()
-                                timerViewModel.setCode("")
+                                timerViewModel.setInputCode("")
 
                                 var timeWithPenalty = timeUntilFinish - (penalty.ifEmpty { "0" }.toInt() * 1000L)
                                 timeWithPenalty = if( timeWithPenalty >= 0) timeWithPenalty else 0

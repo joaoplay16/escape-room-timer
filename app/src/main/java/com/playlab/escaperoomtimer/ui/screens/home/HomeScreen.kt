@@ -64,7 +64,7 @@ fun HomeScreen(
         val timerText = timerViewModel.getTimeString()
         val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
 
-        val code by timerViewModel.code
+        val code by timerViewModel.inputCode
 
         Row(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -105,11 +105,11 @@ fun HomeScreen(
                     Keypad(
                         onDigitClick = { digit ->
                             val c = StringBuilder(code).append(digit).toString()
-                            timerViewModel.setCode(c)
+                            timerViewModel.setInputCode(c)
                         },
                         onOkClick = onKeypadOk,
                         onDeleteClick = {
-                            timerViewModel.setCode(code.dropLast(1))
+                            timerViewModel.setInputCode(code.dropLast(1))
                         }
                     )
                 }
@@ -126,10 +126,10 @@ fun HomeScreen(
                     Keypad(
                         onDigitClick = { digit ->
                             val c = StringBuilder(code).append(digit).toString()
-                            timerViewModel.setCode(c)
+                            timerViewModel.setInputCode(c)
                         },
                         onOkClick = onKeypadOk,
-                        onDeleteClick = { timerViewModel.setCode(code.dropLast(1))}
+                        onDeleteClick = { timerViewModel.setInputCode(code.dropLast(1))}
                     )
                 }
             }

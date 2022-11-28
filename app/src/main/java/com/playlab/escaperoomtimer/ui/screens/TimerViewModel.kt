@@ -16,11 +16,11 @@ class TimerViewModel : ViewModel() {
     private var _startTimeInMillis  =  mutableStateOf(0L)
     val startTimeInMillis = _startTimeInMillis
 
-     var _timeUntilFinishInMillis  =  mutableStateOf(0L)
+    private var _timeUntilFinishInMillis  =  mutableStateOf(0L)
     val timeUntilFinishInMillis = _timeUntilFinishInMillis
 
-    private var _code =  mutableStateOf("")
-    val code = _code
+    private var _inputCode =  mutableStateOf("")
+    val inputCode = _inputCode
 
     private var _defuseCode =  mutableStateOf("")
     val defuseCode = _defuseCode
@@ -35,15 +35,15 @@ class TimerViewModel : ViewModel() {
         _tickSoundEnabled .value = enableTickSound
     }
 
-    fun setCode(code: String){
-        if(code.length <= 8) _code.value = code
+    fun setInputCode(code: String){
+        if(code.length <= 8) _inputCode.value = code
     }
 
     fun setDefuseCode(defuseCode: String){
         _defuseCode.value = defuseCode
     }
 
-    fun setPenaltyValue(penalty: String){
+    fun setPenaltyTime(penalty: String){
         _penalty.value = penalty
     }
 
@@ -75,8 +75,8 @@ class TimerViewModel : ViewModel() {
         )
     }
 
-    fun hasDefused(): Boolean{
-        return code.value == defuseCode.value
+    fun isDefused(): Boolean{
+        return inputCode.value == defuseCode.value
     }
 
     fun resetTimer(){
@@ -84,7 +84,7 @@ class TimerViewModel : ViewModel() {
         setTimeHour(0)
         setTimeMinute(0)
         setTimeSecond(0)
-        setCode("")
+        setInputCode("")
     }
 
 }
