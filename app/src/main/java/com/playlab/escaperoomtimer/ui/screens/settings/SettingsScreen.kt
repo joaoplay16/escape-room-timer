@@ -1,6 +1,7 @@
 package com.playlab.escaperoomtimer.ui.screens.settings
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,29 +25,45 @@ import androidx.core.text.isDigitsOnly
 import com.playlab.escaperoomtimer.R
 import com.playlab.escaperoomtimer.ui.DevicesPreviews
 import com.playlab.escaperoomtimer.ui.components.*
+import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
+import com.playlab.escaperoomtimer.util.TimeUtil.getLeftPaddedNumberString
+import com.playlab.escaperoomtimer.util.TimeUtil.getTimeInMillis
 
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
-    timerHour: String,
-    timerMinute: String,
-    timerSecond: String,
-    defuseCode: String,
-    penalty: String,
+    timerViewModel: TimerViewModel,
     onArrowBackPressed: ()  -> Unit = {},
-    enableTickingSound: Boolean = true,
-    onEnableTickingSoundChange: (Boolean) -> Unit = {},
-    onPenaltyChange: (String) -> Unit = {},
-    onCodeChange: (String) -> Unit,
-    onTimerChange: (Int, Int, Int) -> Unit,
+    onStopTimerClick: () -> Unit = {},
     startCountDownTimer: () -> Unit = {},
-    showDialog: Boolean = false,
-    onDialogOkClick: () -> Unit = {},
-    onDialogCancelClick: () -> Unit = {},
-    onDialogDismiss: () -> Unit = {},
-    countDownComposable: @Composable RowScope.() -> Unit
 ) {
+    val labelVerticalPadding = dimensionResource(id = R.dimen.text_label_vertical_padding)
+    val labelHorizontalPadding = dimensionResource(id = R.dimen.text_label_horizontal_padding)
+    val labelTopPadding = dimensionResource(id = R.dimen.text_label_top_padding)
+    val labelBottomPadding = dimensionResource(id = R.dimen.text_label_bottom_padding)
+
+    val orientation = LocalConfiguration.current.orientation
+    val context = LocalContext.current
+
+    var showDialog by remember{ mutableStateOf(false) }
+
+    val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
+    val startTimeInMillis by timerViewModel.startTimeInMillis
+    val timerText = timerViewModel.getTimeString()
+    val penalty by timerViewModel.penalty
+    var isDefused = timerViewModel.hasDefused()
+    val defuseCode by timerViewModel.defuseCode
+    val tickSoundEnabled by timerViewModel.tickSoundEnabled
+
+    var isSecondsSpinnerExpanded by remember { mutableStateOf(false) }
+
+    var textTimerHour by remember { mutableStateOf("") }
+    var textTimerMinute by remember { mutableStateOf("") }
+    var textTimerSecond by remember { mutableStateOf("") }
+
+
+
     Scaffold(
         topBar = {
             Row(
@@ -73,29 +91,40 @@ fun SettingsScreen(
                         fontSize = dimensionResource(id = R.dimen.screen_title_font_size).value.sp)
                 }
 
-                    countDownComposable()
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextLabel(
+                        modifier = Modifier.padding(end = 10.dp),
+                        fontSize = dimensionResource(id = R.dimen.screen_title_font_size).value.sp,
+                        text = timerText
+                    )
+                    ActionButton(
+                        buttonText = "stop",
+                        onClick = {
+                            if(timeUntilFinish > 0) showDialog = true
+                        },
+                        paddingValues = PaddingValues(horizontal = 10.dp, vertical = 0.dp)
+                    )
+                }
             }
         }
     ) { paddingValues ->
 
-        val labelVerticalPadding = dimensionResource(id = R.dimen.text_label_vertical_padding)
-        val labelHorizontalPadding = dimensionResource(id = R.dimen.text_label_horizontal_padding)
-        val labelTopPadding = dimensionResource(id = R.dimen.text_label_top_padding)
-        val labelBottomPadding = dimensionResource(id = R.dimen.text_label_bottom_padding)
-
-        val orientation = LocalConfiguration.current.orientation
-
-        var isSecondsSpinnerExpanded by remember { mutableStateOf(false) }
-
         if (showDialog){
             TimerDialog(
                 title = "Stop current timer?",
-                onDismiss =  onDialogDismiss ,
-                onOkClick = onDialogOkClick,
-                onCancelClick =  onDialogCancelClick
+                onDismiss =  { showDialog = false },
+                onOkClick = {
+                    onStopTimerClick()
+                    timerViewModel.resetTimer()
+                    showDialog = false
+                },
+                onCancelClick =  { showDialog = false }
             )
         }
-
 
         Row(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -113,15 +142,26 @@ fun SettingsScreen(
                     showDialog = showTimePickerDialog,
                     onDismissRequest = { showTimePickerDialog = false},
                     onTimeSelected = { hour, minute ->
-                        val second = if( timerSecond.run{ isNullOrEmpty() || !isDigitsOnly()} )
-                            0 else timerSecond.toInt()
-                        onTimerChange(hour, minute, second)
+                        val second = if( textTimerSecond.run{ isNullOrEmpty() || !isDigitsOnly()} )
+                            0 else textTimerSecond.toInt()
+
+                        textTimerHour = hour.toString()
+                        textTimerMinute = minute.toString()
+                        textTimerSecond = second.toString()
+
+                        timerViewModel.setStartTimeInMillis(
+                            getTimeInMillis(
+                                hour,
+                                minute,
+                                second
+                            )
+                        )
                     })
 
                 TextLabel( Modifier.padding(vertical =labelVerticalPadding),text = "Timer")
                 Row(verticalAlignment = Alignment.Bottom) {
                     TimeInput(
-                        text = timerHour,
+                        text = getLeftPaddedNumberString(textTimerHour.ifEmpty { "0" }.toInt()),
                         readOnly = true,
                         enabled = false,
                         onClick = {
@@ -131,7 +171,7 @@ fun SettingsScreen(
                     TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "h")
 
                     TimeInput(
-                        text = timerMinute,
+                        text = getLeftPaddedNumberString(textTimerMinute.ifEmpty { "0" }.toInt()),
                         readOnly = true,
                         enabled = false,
                         onClick = {
@@ -143,10 +183,20 @@ fun SettingsScreen(
                     TimeSpinner(
                         timeRange = 0 .. 59,
                         expanded = isSecondsSpinnerExpanded,
-                        onExpand = { isSecondsSpinnerExpanded = it},
-                        selectedValue = timerSecond.toInt(),
+                        onExpand = { isSecondsSpinnerExpanded = it },
+                        selectedValue = textTimerSecond.ifEmpty { "0" }.toInt(),
                         onValueSelected = { second ->
-                            onTimerChange(timerHour.toInt(), timerMinute.toInt(), second)
+
+                            textTimerSecond = second.toString()
+
+                            timerViewModel
+                                .setStartTimeInMillis(
+                                    getTimeInMillis(
+                                        textTimerHour.ifEmpty { "0" }.toInt(),
+                                        textTimerHour.ifEmpty { "0" }.toInt(),
+                                        second
+                                    )
+                                )
                             },
                     )
                     TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "s")
@@ -157,14 +207,14 @@ fun SettingsScreen(
                     SecretCodeInput(
                         text = defuseCode,
                         maxLength = 8,
-                        onValueChange = { onCodeChange(it) },
+                        onValueChange = {  timerViewModel.setDefuseCode(it) },
 //                        isError = defuseCode.isEmpty()
                     )
                 }
 
                 TextLabel( Modifier.padding(top = labelTopPadding, bottom = labelBottomPadding), text = "Penalty")
                 Row(verticalAlignment = Alignment.Bottom) {
-                    TimeInput(text = penalty, onValueChange = onPenaltyChange)
+                    TimeInput(text = penalty, onValueChange = { timerViewModel.setPenaltyValue(it) })
                     TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "sec")
                 }
 
@@ -175,8 +225,8 @@ fun SettingsScreen(
                     TextLabel( Modifier.padding(top = labelTopPadding, bottom = labelHorizontalPadding), text = "Ticking sound")
                     SettingsCheckBox(
 
-                        checked = enableTickingSound,
-                        onCheckChanged = onEnableTickingSoundChange
+                        checked = tickSoundEnabled,
+                        onCheckChanged = { timerViewModel.setEnabledTickSound(it)}
                     )
                 }
 
@@ -187,7 +237,16 @@ fun SettingsScreen(
                             .padding(top = 50.dp), horizontalArrangement = Arrangement.Center
                     ) {
                         ActionButton(buttonText = "START", onClick = {
-
+                            isDefused = false // TODO reset in view model
+                            if(defuseCode.isEmpty()){
+                                Toast.makeText(context, "Fill defuse code!", Toast.LENGTH_LONG).show()
+                                return@ActionButton
+                            }
+                            if(timeUntilFinish > 0) {
+                                showDialog = true
+                                return@ActionButton
+                            }
+                            timerViewModel.setTimeUntilFinishInMillis(startTimeInMillis)
                             startCountDownTimer()
                         })
                     }
@@ -217,43 +276,8 @@ fun SettingsScreen(
 fun PreviewSettingsScreen() {
     EscapeRoomTimerTheme(darkTheme = true) {
         Surface {
-            var timerHour by remember { mutableStateOf("") }
-            var timerMinute by remember { mutableStateOf("") }
-            var timerSecond by remember { mutableStateOf("") }
-
             SettingsScreen(
-                timerHour = timerHour,
-                timerMinute = timerMinute,
-                enableTickingSound = true,
-                onEnableTickingSoundChange = {},
-                penalty = "",
-                onPenaltyChange = {},
-                defuseCode = "",
-                onCodeChange = { },
-                timerSecond = timerSecond,
-                onTimerChange = { hour, minute, secont ->
-                    timerHour = hour.toString()
-                    timerMinute = minute.toString()
-                    timerSecond = "00"
-                },
-                countDownComposable = {
-                    Row(
-                        modifier = Modifier.padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TextLabel(
-                            modifier = Modifier.padding(end = 10.dp),
-                            fontSize = dimensionResource(id = R.dimen.screen_title_font_size).value.sp,
-                            text = "00:00:00"
-                        )
-                        ActionButton(
-                            buttonText = "stop",
-                            paddingValues = PaddingValues(horizontal = 10.dp, vertical = 0.dp)
-                        )
-                    }
-
-                }
+                timerViewModel = TimerViewModel(),
             )
         }
     }

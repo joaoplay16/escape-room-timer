@@ -5,33 +5,24 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.playlab.escaperoomtimer.ui.components.ActionButton
-import com.playlab.escaperoomtimer.ui.components.TextLabel
 import com.playlab.escaperoomtimer.ui.screens.ScreenRoutes
 import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.screens.home.HomeScreen
 import com.playlab.escaperoomtimer.ui.screens.settings.SettingsScreen
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
-import com.playlab.escaperoomtimer.util.TimeUtil.getLeftPaddedNumberString
-import com.playlab.escaperoomtimer.util.TimeUtil.getTimeInMillis
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -142,13 +133,9 @@ class MainActivity : ComponentActivity() {
         timerViewModel: TimerViewModel
     ) {
 
-        var isDefused = timerViewModel.hasDefused()
-        val startTimeInMillis by timerViewModel.startTimeInMillis
+        val isDefused = timerViewModel.hasDefused()
         val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
         val penalty by timerViewModel.penalty
-        val defuseCode by timerViewModel.defuseCode
-        val tickSoundEnabled by timerViewModel.tickSoundEnabled
-        val timerText = timerViewModel.getTimeString()
 
         NavHost(
             modifier = modifier,
@@ -184,82 +171,15 @@ class MainActivity : ComponentActivity() {
             }
 
             composable(ScreenRoutes.Settings.name){
-                var textTimerHour by remember { mutableStateOf("") }
-                var textTimerMinute by remember { mutableStateOf("") }
-                var textTimerSecond by remember { mutableStateOf("") }
-
-                val context = LocalContext.current
-
-                var showDialog by remember{ mutableStateOf(false) }
-
                 SettingsScreen(
-                    timerHour = getLeftPaddedNumberString(textTimerHour.ifEmpty { "0" }.toInt()),
-                    timerMinute = getLeftPaddedNumberString(textTimerMinute.ifEmpty { "0" }.toInt()),
-                    timerSecond = getLeftPaddedNumberString((textTimerSecond).ifEmpty { "0" }.toInt()),
-                    enableTickingSound = tickSoundEnabled,
-                    onEnableTickingSoundChange = { timerViewModel.setEnabledTickSound(it) },
-                    penalty = penalty,
-                    onPenaltyChange = {
-                        timerViewModel.setPenaltyValue(it)
-                    },
-                    defuseCode = defuseCode,
-                    onCodeChange = {
-
-                        timerViewModel.setDefuseCode(it)
-                                   },
-                    onTimerChange = { hour, minute, second ->
-                        textTimerHour = hour.toString()
-                        textTimerMinute = minute.toString()
-                        textTimerSecond = second.toString()
-
-                        timerViewModel.setStartTimeInMillis(getTimeInMillis(hour, minute, second))
-                    },
+                    timerViewModel = timerViewModel,
                     startCountDownTimer = {
-                        isDefused = false
-                        if(defuseCode.isEmpty()){
-                            Toast.makeText(context, "Fill defuse code!", Toast.LENGTH_LONG).show()
-                            return@SettingsScreen
-                        }
-                        if(timeUntilFinish > 0) {
-                            showDialog = true
-                            return@SettingsScreen
-                        }
-//                        stopTimer()
-                        timerViewModel.setTimeUntilFinishInMillis(startTimeInMillis)
                         startTimer(timerViewModel)
                         navController.popBackStack()
                     },
                     onArrowBackPressed = { navController.popBackStack() },
-                    showDialog = showDialog,
-                    onDialogOkClick = {
-                        timerViewModel.resetTimer()
+                    onStopTimerClick = {
                         stopTimer()
-                        showDialog = false
-                    },
-                    onDialogCancelClick = { showDialog = false },
-                    onDialogDismiss = { showDialog = false},
-                    countDownComposable = {
-
-                        Row(
-                            modifier = Modifier.padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            TextLabel(
-                                modifier = Modifier.padding(end = 10.dp),
-                                fontSize = dimensionResource(id = R.dimen.screen_title_font_size).value.sp,
-                                text = timerText
-                            )
-                            ActionButton(
-                                buttonText = "stop",
-                                onClick = {
-                                      if(timeUntilFinish > 0) showDialog = true
-//                                    timerViewModel.resetTimer()
-//                                    stopTimer()
-                                },
-                                paddingValues = PaddingValues(horizontal = 10.dp, vertical = 0.dp)
-                            )
-                        }
                     }
                 )
             }
