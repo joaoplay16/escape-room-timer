@@ -71,9 +71,9 @@ class MainActivity : ComponentActivity() {
                         floor((millisUntilFinished.toDouble() / (1000 * 60)) % 60).toInt()
                     val timerSecond = floor((millisUntilFinished.toDouble() / 1000) % 60).toInt()
 
-                    timerViewModel.setTimeHour(timerHour)
-                    timerViewModel.setTimeMinute(timerMinute)
-                    timerViewModel.setTimeSecond(timerSecond)
+                    timerViewModel.setTimerHour(timerHour)
+                    timerViewModel.setTimerMinute(timerMinute)
+                    timerViewModel.setTimerSecond(timerSecond)
 
                     timerViewModel.setTimeUntilFinishInMillis(millisUntilFinished)
                 }

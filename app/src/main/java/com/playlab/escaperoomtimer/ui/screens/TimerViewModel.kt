@@ -47,15 +47,15 @@ class TimerViewModel : ViewModel() {
         _penalty.value = penalty
     }
 
-    fun setTimeHour(value: Int){
+    fun setTimerHour(value: Int){
         _timerHour.value = value
     }
 
-    fun setTimeMinute(value: Int){
+    fun setTimerMinute(value: Int){
         _timerMinute.value = value
     }
 
-    fun setTimeSecond(value: Int){
+    fun setTimerSecond(value: Int){
         _timerSecond.value = value
     }
 
@@ -81,9 +81,9 @@ class TimerViewModel : ViewModel() {
 
     fun resetTimer(){
         setTimeUntilFinishInMillis(0)
-        setTimeHour(0)
-        setTimeMinute(0)
-        setTimeSecond(0)
+        setTimerHour(0)
+        setTimerMinute(0)
+        setTimerSecond(0)
         setInputCode("")
     }
 
