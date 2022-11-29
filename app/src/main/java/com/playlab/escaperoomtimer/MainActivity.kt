@@ -26,7 +26,6 @@ import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.math.floor
 
 
 class MainActivity : ComponentActivity() {
@@ -64,16 +63,6 @@ class MainActivity : ComponentActivity() {
                 override fun onTick(millisUntilFinished: Long) {
 
                     if (tickSoundEnabled) playSound(R.raw.beep)
-
-                    val timerHour =
-                        floor((millisUntilFinished.toDouble() / (1000 * 60 * 60)) % 24).toInt()
-                    val timerMinute =
-                        floor((millisUntilFinished.toDouble() / (1000 * 60)) % 60).toInt()
-                    val timerSecond = floor((millisUntilFinished.toDouble() / 1000) % 60).toInt()
-
-                    timerViewModel.setTimerHour(timerHour)
-                    timerViewModel.setTimerMinute(timerMinute)
-                    timerViewModel.setTimerSecond(timerSecond)
 
                     timerViewModel.setTimeUntilFinishInMillis(millisUntilFinished)
                 }
