@@ -21,7 +21,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.text.isDigitsOnly
 import com.playlab.escaperoomtimer.R
 import com.playlab.escaperoomtimer.ui.DevicesPreviews
 import com.playlab.escaperoomtimer.ui.components.*
@@ -50,19 +49,16 @@ fun SettingsScreen(
 
     val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
     val startTimeInMillis by timerViewModel.startTimeInMillis
-    val timerText = timerViewModel.getTimeString()
+    val fullTimerText = timerViewModel.getTimeString()
     val penalty by timerViewModel.penalty
-    var isDefused = timerViewModel.isDefused()
     val defuseCode by timerViewModel.defuseCode
     val tickSoundEnabled by timerViewModel.tickSoundEnabled
 
     var isSecondsSpinnerExpanded by remember { mutableStateOf(false) }
 
-    var textTimerHour by remember { mutableStateOf("") }
-    var textTimerMinute by remember { mutableStateOf("") }
-    var textTimerSecond by remember { mutableStateOf("") }
-
-
+    var textTimerHour by remember { mutableStateOf("00") }
+    var textTimerMinute by remember { mutableStateOf("00") }
+    var textTimerSecond by remember { mutableStateOf("00") }
 
     Scaffold(
         topBar = {
@@ -99,7 +95,7 @@ fun SettingsScreen(
                     TextLabel(
                         modifier = Modifier.padding(end = 10.dp),
                         fontSize = dimensionResource(id = R.dimen.screen_title_font_size).value.sp,
-                        text = timerText
+                        text = fullTimerText
                     )
                     ActionButton(
                         buttonText = "stop",
@@ -142,12 +138,10 @@ fun SettingsScreen(
                     showDialog = showTimePickerDialog,
                     onDismissRequest = { showTimePickerDialog = false},
                     onTimeSelected = { hour, minute ->
-                        val second = if( textTimerSecond.run{ isNullOrEmpty() || !isDigitsOnly()} )
-                            0 else textTimerSecond.toInt()
+                        val second = textTimerSecond.toInt()
 
-                        textTimerHour = hour.toString()
-                        textTimerMinute = minute.toString()
-                        textTimerSecond = second.toString()
+                       textTimerHour = getLeftPaddedNumberString(hour)
+                       textTimerMinute = getLeftPaddedNumberString(minute)
 
                         timerViewModel.setStartTimeInMillis(
                             getTimeInMillis(
@@ -161,7 +155,7 @@ fun SettingsScreen(
                 TextLabel( Modifier.padding(vertical =labelVerticalPadding),text = "Timer")
                 Row(verticalAlignment = Alignment.Bottom) {
                     TimeInput(
-                        text = getLeftPaddedNumberString(textTimerHour.ifEmpty { "0" }.toInt()),
+                        text = textTimerHour,
                         readOnly = true,
                         enabled = false,
                         onClick = {
@@ -171,7 +165,7 @@ fun SettingsScreen(
                     TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "h")
 
                     TimeInput(
-                        text = getLeftPaddedNumberString(textTimerMinute.ifEmpty { "0" }.toInt()),
+                        text = textTimerMinute,
                         readOnly = true,
                         enabled = false,
                         onClick = {
@@ -184,7 +178,7 @@ fun SettingsScreen(
                         timeRange = 0 .. 59,
                         expanded = isSecondsSpinnerExpanded,
                         onExpand = { isSecondsSpinnerExpanded = it },
-                        selectedValue = textTimerSecond.ifEmpty { "0" }.toInt(),
+                        selectedValue = textTimerSecond.toInt(),
                         onValueSelected = { second ->
 
                             textTimerSecond = second.toString()
@@ -192,8 +186,8 @@ fun SettingsScreen(
                             timerViewModel
                                 .setStartTimeInMillis(
                                     getTimeInMillis(
-                                        textTimerHour.ifEmpty { "0" }.toInt(),
-                                        textTimerHour.ifEmpty { "0" }.toInt(),
+                                        textTimerHour.toInt(),
+                                        textTimerMinute.toInt(),
                                         second
                                     )
                                 )
@@ -237,7 +231,6 @@ fun SettingsScreen(
                             .padding(top = 50.dp), horizontalArrangement = Arrangement.Center
                     ) {
                         ActionButton(buttonText = "START", onClick = {
-                            isDefused = false
                             if(defuseCode.isEmpty()){
                                 Toast.makeText(context, "Fill defuse code!", Toast.LENGTH_LONG).show()
                                 return@ActionButton
