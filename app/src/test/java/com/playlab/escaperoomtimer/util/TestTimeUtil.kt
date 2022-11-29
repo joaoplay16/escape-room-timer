@@ -20,4 +20,11 @@ class TestTimeUtil {
 
         assertThat(timeString).isEqualTo("23:59:59")
     }
+
+    @Test
+    fun `getFormattedTimeString(86399000L) should return 24 hour time string` (){
+        val timeString: String = getFormattedTimeString(86399000L)
+
+        assertThat(timeString).isEqualTo("23:59:59")
+    }
 }
