@@ -1,6 +1,7 @@
 package com.playlab.escaperoomtimer.util
 
 import com.google.common.truth.Truth.assertThat
+import com.playlab.escaperoomtimer.util.TimeUtil.getFormattedTimeString
 import com.playlab.escaperoomtimer.util.TimeUtil.getTimeInMillis
 import org.junit.Test
 
@@ -11,5 +12,12 @@ class TestTimeUtil {
         val timeInMillis = getTimeInMillis(23, 59, 59)
 
         assertThat(timeInMillis).isEqualTo(86399000)
+    }
+
+    @Test
+    fun `getFormattedTimeString(23, 59, 59) should return 24 hour time string` (){
+        val timeString: String = getFormattedTimeString(23, 59, 59)
+
+        assertThat(timeString).isEqualTo("23:59:59")
     }
 }
