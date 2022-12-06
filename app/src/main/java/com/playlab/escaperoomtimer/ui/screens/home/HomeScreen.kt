@@ -119,11 +119,14 @@ fun HomeScreen(
                 Column(
                     Modifier
                         .fillMaxSize()
-                        .padding(top =  dimensionResource(id = R.dimen.big_timer_top_padding))
                         .weight(1f),
                     verticalArrangement = Arrangement.Top,
                     ) {
                     Keypad(
+                        modifier = Modifier
+                            .padding(
+                                top =  dimensionResource(id = R.dimen.big_timer_top_padding)
+                            ),
                         onDigitClick = { digit ->
                             val c = StringBuilder(code).append(digit).toString()
                             timerViewModel.setInputCode(c)
