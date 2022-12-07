@@ -254,13 +254,21 @@ fun SettingsScreen(
                         .weight(1f),
 
                 ) {
-                    ActionButton(buttonText = "START", onClick = startCountDownTimer)
+                    ActionButton(buttonText = "START", onClick = {
+                        if(defuseCode.isEmpty()){
+                            Toast.makeText(context, "Fill defuse code!", Toast.LENGTH_LONG).show()
+                            return@ActionButton
+                        }
+                        if(timeUntilFinish > 0) {
+                            showDialog = true
+                            return@ActionButton
+                        }
+                        timerViewModel.setTimeUntilFinishInMillis(startTimeInMillis)
+                        startCountDownTimer()
+                    })
                 }
             }
         }
-
-
-
     }
 }
 
