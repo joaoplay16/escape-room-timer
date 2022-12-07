@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="keypad_button_size">59dp</dimen>
+    <dimen name="keypad_button_font_size">18sp</dimen>
+    <dimen name="keypad_button_ok_font_size">15sp</dimen>
+</resources>
