@@ -30,14 +30,17 @@ fun Keypad(
             modifier = Modifier.fillMaxWidth(0.95f),
             horizontalArrangement = Arrangement.SpaceEvenly) {
             KeypadButton(
+                fontSize = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
                 buttonText = "1",
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
             KeypadButton(
+                fontSize = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
                 buttonText = "2",
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
             KeypadButton(
+                fontSize = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
                 buttonText = "3",
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
@@ -48,6 +51,7 @@ fun Keypad(
             modifier = Modifier.fillMaxWidth(0.95f),
             horizontalArrangement = Arrangement.SpaceEvenly) {
             KeypadButton(
+                fontSize = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
                 buttonText = "4",
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
@@ -56,6 +60,7 @@ fun Keypad(
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
             KeypadButton(
+                fontSize = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
                 buttonText = "6",
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
@@ -66,14 +71,17 @@ fun Keypad(
             modifier = Modifier.fillMaxWidth(0.95f),
             horizontalArrangement = Arrangement.SpaceEvenly) {
             KeypadButton(
+                fontSize = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
                 buttonText = "7",
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
             KeypadButton(
+                fontSize = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
                 buttonText = "8",
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
             KeypadButton(
+                fontSize = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
                 buttonText = "9",
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
@@ -83,14 +91,17 @@ fun Keypad(
             modifier = Modifier.fillMaxWidth(0.95f),
             horizontalArrangement = Arrangement.SpaceEvenly) {
             KeypadButton(
+                fontSize = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
                 buttonText = "<",
                 onClick = { onDeleteClick() }
             )
             KeypadButton(
+                fontSize = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
                 buttonText = "0",
                 onClick = { buttonValue -> onDigitClick(buttonValue)}
             )
             KeypadButton(
+                fontSize = dimensionResource(id = R.dimen.keypad_button_ok_font_size).value.sp,
                 buttonText = "OK",
                 onClick = { onOkClick() }
             )
