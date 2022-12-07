@@ -19,4 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
     fontScale = 0.9f,
     showSystemUi = true
 )
+@Preview(
+    name = "Pixel 2 land",
+    group = "Devices",
+    device = "spec:id=pixel_2,shape=Normal,width=860,height=420,unit=dp,dpi=420",
+    uiMode = UI_MODE_NIGHT_YES,
+    fontScale = 0.9f,
+    showSystemUi = true
+)
 annotation class DevicesPreviews
