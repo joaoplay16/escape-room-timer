@@ -2,9 +2,9 @@
     <string name="app_name">Escape Room Timer</string>
 
     <string name="time_picker_label">Timer</string>
-    <string name="time_picker_input_hour_label">h</string>
-    <string name="time_picker_input_minute_label">m</string>
-    <string name="time_picker_input_second_label">s</string>
+    <string name="time_picker_input_hour_label" translatable="false">h</string>
+    <string name="time_picker_input_minute_label" translatable="false">m</string>
+    <string name="time_picker_input_second_label" translatable="false">s</string>
     <string name="defuse_code_input_label">Defuse code</string>
     <string name="penalty_label">Penalty</string>
     <string name="penalty_input_seconds_label">sec</string>
