@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Escape Room Timer</string>
+
+    <string name="time_picker_label">Timer</string>
+    <string name="time_picker_input_hour_label">h</string>
+    <string name="time_picker_input_minute_label">m</string>
+    <string name="time_picker_input_second_label">s</string>
+    <string name="defuse_code_input_label">Defuse code</string>
+    <string name="penalty_label">Penalty</string>
+    <string name="penalty_input_seconds_label">sec</string>
+    <string name="ticking_sound_checkbox_label">Ticking sound</string>
+    <string name="start_button_text">Start</string>
+    <string name="stop_button_text">stop</string>
+    <string name="stop_timer_message">Stop current timer?</string>
+    <string name="defuse_code_required_message">Fill defuse code!</string>
+    <string name="settings_screen_title">Settings</string>
+    <string name="defuse_text">Defused!</string>
+    <string name="arrow_back_icon_content_description">Back</string>
+    <string name="settings_icon_content_description">Settings</string>
 </resources>

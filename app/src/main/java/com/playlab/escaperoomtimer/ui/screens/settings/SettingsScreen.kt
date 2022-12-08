@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.playlab.escaperoomtimer.R
@@ -60,6 +61,9 @@ fun SettingsScreen(
     var textTimerMinute by remember { mutableStateOf("00") }
     var textTimerSecond by remember { mutableStateOf("00") }
 
+    val defuseCodeRequiredMessage = stringResource(id = R.string.defuse_code_required_message)
+    val startButtonText = stringResource(id = R.string.start_button_text).uppercase()
+
     Scaffold(
         topBar = {
             Row(
@@ -80,10 +84,10 @@ fun SettingsScreen(
                                 onArrowBackPressed()
                             },
                         imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "BACK"
+                        contentDescription = stringResource(id = R.string.arrow_back_icon_content_description)
                     )
                     TextLabel(
-                        text = "Settings",
+                        text = stringResource(id = R.string.settings_screen_title),
                         fontSize = dimensionResource(id = R.dimen.screen_title_font_size).value.sp)
                 }
 
@@ -98,7 +102,7 @@ fun SettingsScreen(
                         text = fullTimerText
                     )
                     ActionButton(
-                        buttonText = "stop",
+                        buttonText = stringResource(id = R.string.stop_button_text),
                         onClick = {
                             if(timeUntilFinish > 0) showDialog = true
                         },
@@ -111,7 +115,7 @@ fun SettingsScreen(
 
         if (showDialog){
             TimerDialog(
-                title = "Stop current timer?",
+                title = stringResource(id = R.string.defuse_code_required_message),
                 onDismiss =  { showDialog = false },
                 onOkClick = {
                     onStopTimerClick()
@@ -152,7 +156,10 @@ fun SettingsScreen(
                         )
                     })
 
-                TextLabel( Modifier.padding(vertical =labelVerticalPadding),text = "Timer")
+                TextLabel( Modifier
+                    .padding(vertical =labelVerticalPadding),
+                    text = stringResource(id = R.string.time_picker_label)
+                )
                 Row(verticalAlignment = Alignment.Bottom) {
                     TimeInput(
                         text = textTimerHour,
@@ -162,8 +169,10 @@ fun SettingsScreen(
                             showTimePickerDialog = true
                         }
                     )
-                    TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "h")
-
+                    TextLabel(
+                        Modifier.padding(
+                            horizontal = labelHorizontalPadding),
+                            text = stringResource(id = R.string.time_picker_input_hour_label))
                     TimeInput(
                         text = textTimerMinute,
                         readOnly = true,
@@ -172,7 +181,11 @@ fun SettingsScreen(
                             showTimePickerDialog = true
                         }
                     )
-                    TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "m")
+                    TextLabel(
+                        Modifier.padding(
+                            horizontal = labelHorizontalPadding),
+                            text = stringResource(id = R.string.time_picker_input_minute_label)
+                    )
 
                     TimeSpinner(
                         timeRange = 0 .. 59,
@@ -193,10 +206,18 @@ fun SettingsScreen(
                                 )
                             },
                     )
-                    TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "s")
+                    TextLabel(
+                        Modifier.padding(
+                            horizontal = labelHorizontalPadding),
+                            text = stringResource(id = R.string.time_picker_input_second_label)
+                    )
                 }
 
-                TextLabel( Modifier.padding(top = labelTopPadding, bottom = labelBottomPadding), text = "Defuse code")
+                TextLabel(
+                    Modifier.padding(
+                        top = labelTopPadding,
+                        bottom = labelBottomPadding),
+                        text = stringResource(id = R.string.defuse_code_input_label))
                 Row(verticalAlignment = Alignment.Bottom) {
                     SecretCodeInput(
                         text = defuseCode,
@@ -206,17 +227,30 @@ fun SettingsScreen(
                     )
                 }
 
-                TextLabel( Modifier.padding(top = labelTopPadding, bottom = labelBottomPadding), text = "Penalty")
+                TextLabel(
+                    Modifier.padding(
+                        top = labelTopPadding,
+                        bottom = labelBottomPadding),
+                        text = stringResource(id = R.string.penalty_label)
+                )
                 Row(verticalAlignment = Alignment.Bottom) {
                     TimeInput(text = penalty, onValueChange = { timerViewModel.setPenaltyTime(it) })
-                    TextLabel( Modifier.padding(horizontal = labelHorizontalPadding), text = "sec")
+                    TextLabel(
+                        Modifier.padding(horizontal = labelHorizontalPadding),
+                        text = stringResource(id = R.string.penalty_input_seconds_label)
+                    )
                 }
 
                 Row(
 
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextLabel( Modifier.padding(top = labelTopPadding, bottom = labelHorizontalPadding), text = "Ticking sound")
+                    TextLabel(
+                        Modifier.padding(
+                            top = labelTopPadding,
+                            bottom = labelHorizontalPadding),
+                            text = stringResource(id = R.string.ticking_sound_checkbox_label)
+                    )
                     SettingsCheckBox(
 
                         checked = tickSoundEnabled,
@@ -230,9 +264,10 @@ fun SettingsScreen(
                             .fillMaxWidth()
                             .padding(top = 50.dp), horizontalArrangement = Arrangement.Center
                     ) {
-                        ActionButton(buttonText = "START", onClick = {
+
+                        ActionButton(buttonText = startButtonText, onClick = {
                             if(defuseCode.isEmpty()){
-                                Toast.makeText(context, "Fill defuse code!", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, defuseCodeRequiredMessage, Toast.LENGTH_LONG).show()
                                 return@ActionButton
                             }
                             if(timeUntilFinish > 0) {
@@ -254,9 +289,9 @@ fun SettingsScreen(
                         .weight(1f),
 
                 ) {
-                    ActionButton(buttonText = "START", onClick = {
+                    ActionButton(buttonText = startButtonText, onClick = {
                         if(defuseCode.isEmpty()){
-                            Toast.makeText(context, "Fill defuse code!", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, defuseCodeRequiredMessage, Toast.LENGTH_LONG).show()
                             return@ActionButton
                         }
                         if(timeUntilFinish > 0) {

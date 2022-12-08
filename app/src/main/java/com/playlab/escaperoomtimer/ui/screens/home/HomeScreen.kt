@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.playlab.escaperoomtimer.R
@@ -52,7 +53,7 @@ fun HomeScreen(
                             onSettingsClick()
                         },
                     imageVector = Icons.Default.Settings,
-                    contentDescription = ""
+                    contentDescription = stringResource(id = R.string.settings_icon_content_description)
                 )
             }
         }
@@ -72,7 +73,7 @@ fun HomeScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .padding(
-                        top =  dimensionResource(id = R.dimen.big_timer_top_padding),
+                        top = dimensionResource(id = R.dimen.big_timer_top_padding),
                         bottom = dimensionResource(id = R.dimen.big_timer_bottom_padding)
                     )
                     .weight(1f),
@@ -92,7 +93,7 @@ fun HomeScreen(
 
                 if(isDefused){
                     TextLabel(
-                        text = "Defused",
+                        text = stringResource(id = R.string.defuse_text),
                         fontSize = dimensionResource(id = R.dimen.is_defused_text_font_size).value.sp,
                         textColor = MaterialTheme.colors.onPrimary,
                         textStyle = MaterialTheme.typography.h1
