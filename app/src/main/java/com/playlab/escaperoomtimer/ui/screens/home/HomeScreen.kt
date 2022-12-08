@@ -10,10 +10,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -61,7 +58,7 @@ fun HomeScreen(
 
         val orientation = LocalConfiguration.current.orientation
 
-        val isDefused by remember{ mutableStateOf(false) }
+        var isDefused by remember{ mutableStateOf(false) }
         val timerText = timerViewModel.getTimeString()
         val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
 
@@ -108,7 +105,10 @@ fun HomeScreen(
                             val c = StringBuilder(code).append(digit).toString()
                             timerViewModel.setInputCode(c)
                         },
-                        onOkClick = onKeypadOk,
+                        onOkClick = {
+                            isDefused = timerViewModel.isDefused()
+                            onKeypadOk()
+                        },
                         onDeleteClick = {
                             timerViewModel.setInputCode(code.dropLast(1))
                         }
@@ -132,7 +132,10 @@ fun HomeScreen(
                             val c = StringBuilder(code).append(digit).toString()
                             timerViewModel.setInputCode(c)
                         },
-                        onOkClick = onKeypadOk,
+                        onOkClick = {
+                            isDefused = timerViewModel.isDefused()
+                            onKeypadOk()
+                        },
                         onDeleteClick = { timerViewModel.setInputCode(code.dropLast(1))}
                     )
                 }
