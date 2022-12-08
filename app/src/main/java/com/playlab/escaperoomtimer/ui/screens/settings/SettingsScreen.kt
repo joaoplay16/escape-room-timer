@@ -115,7 +115,7 @@ fun SettingsScreen(
 
         if (showDialog){
             TimerDialog(
-                title = stringResource(id = R.string.defuse_code_required_message),
+                title = stringResource(id = R.string.stop_timer_message),
                 onDismiss =  { showDialog = false },
                 onOkClick = {
                     onStopTimerClick()
