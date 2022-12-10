@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Escape Room Timer</string>
+    <string name="time_picker_label" translatable="false">Temporizador</string>
+    <string name="defuse_code_input_label">Código de desactivación</string>
+    <string name="penalty_label">Penalización</string>
+    <string name="penalty_input_seconds_label">seg.</string>
+    <string name="ticking_sound_checkbox_label">Sonido de tic-tac</string>
+    <string name="start_button_text">Empezar</string>
+    <string name="stop_button_text">detener</string>
+    <string name="defuse_code_required_message">¡Llene el código de desactivación!</string>
+    <string name="settings_screen_title">Configuraciones</string>
+    <string name="defuse_text">Desactivado</string>
+    <string name="arrow_back_icon_content_description">Atrás</string>
+    <string name="settings_icon_content_description">Configuraciones</string>
+    <string name="stop_timer_message">¿Detener el temporizador en curso?</string>
+</resources>
