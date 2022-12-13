@@ -11,9 +11,9 @@ Escape Room Timer is an app that simulates a time bomb, try to disarm it before 
 
 ## Screenshots
 <p>
-<img width="300" src="https://github.com/joaoplay16/escape-room-timer/raw/main/screenshots/ert-home.gif"/>
-<img width="300" src="https://github.com/joaoplay16/escape-room-timer/raw/main/screenshots/ert-settings.png"/>
-<img width="300" src="https://github.com/joaoplay16/escape-room-timer/raw/main/screenshots/ert-home_timer-stopped.png"/>
+<img width="240" src="https://github.com/joaoplay16/escape-room-timer/raw/main/screenshots/ert-home.gif"/>
+<img width="240" src="https://github.com/joaoplay16/escape-room-timer/raw/main/screenshots/ert-settings.png"/>
+<img width="240" src="https://github.com/joaoplay16/escape-room-timer/raw/main/screenshots/ert-home_timer-stopped.png"/>
 </p>
 
 ## Used libraries
