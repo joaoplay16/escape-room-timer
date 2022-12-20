@@ -16,11 +16,7 @@ object TimeUtil {
     }
 
     fun getLeftPaddedNumberString(number: Int = 0): String {
-        val time = String.format(
-            Locale.getDefault(),
-            "%02d",
-            number)
-        return time
+        return number.toString().padStart(2, '0')
     }
 
     fun getTimeInMillis(hour: Int = 0, minutes: Int = 0, second: Int = 0): Long {
