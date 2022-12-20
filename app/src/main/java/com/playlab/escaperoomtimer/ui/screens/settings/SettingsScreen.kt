@@ -55,11 +55,9 @@ fun SettingsScreen(
     val defuseCode by timerViewModel.defuseCode
     val tickSoundEnabled by timerViewModel.tickSoundEnabled
 
-    var isSecondsSpinnerExpanded by remember { mutableStateOf(false) }
-
-    var textTimerHour by remember { mutableStateOf("00") }
-    var textTimerMinute by remember { mutableStateOf("00") }
-    var textTimerSecond by remember { mutableStateOf("00") }
+    var timerHour by remember { mutableStateOf(0) }
+    var timerMinute by remember { mutableStateOf(0) }
+    var timerSecond by remember { mutableStateOf(0) }
 
     val defuseCodeRequiredMessage = stringResource(id = R.string.defuse_code_required_message)
     val startButtonText = stringResource(id = R.string.start_button_text).uppercase()
@@ -139,13 +137,16 @@ fun SettingsScreen(
                 var showTimePickerDialog by remember{ mutableStateOf(false) }
 
                 TimePickerDialog(
+                    initialHour = timerHour,
+                    initialMinute = timerMinute,
+                    initialSecond = timerSecond,
+                    modifier = Modifier.size(320.dp, 180.dp),
                     showDialog = showTimePickerDialog,
                     onDismissRequest = { showTimePickerDialog = false},
-                    onTimeSelected = { hour, minute ->
-                        val second = textTimerSecond.toInt()
-
-                       textTimerHour = getLeftPaddedNumberString(hour)
-                       textTimerMinute = getLeftPaddedNumberString(minute)
+                    onTimeSelected = { hour, minute, second ->
+                       timerHour = hour
+                       timerMinute = minute
+                       timerSecond = second
 
                         timerViewModel.setStartTimeInMillis(
                             getTimeInMillis(
@@ -162,7 +163,7 @@ fun SettingsScreen(
                 )
                 Row(verticalAlignment = Alignment.Bottom) {
                     TimeInput(
-                        text = textTimerHour,
+                        text = getLeftPaddedNumberString(timerHour),
                         readOnly = true,
                         enabled = false,
                         onClick = {
@@ -174,7 +175,7 @@ fun SettingsScreen(
                             horizontal = labelHorizontalPadding),
                             text = stringResource(id = R.string.time_picker_input_hour_label))
                     TimeInput(
-                        text = textTimerMinute,
+                        text = getLeftPaddedNumberString(timerMinute),
                         readOnly = true,
                         enabled = false,
                         onClick = {
@@ -187,24 +188,13 @@ fun SettingsScreen(
                             text = stringResource(id = R.string.time_picker_input_minute_label)
                     )
 
-                    TimeSpinner(
-                        timeRange = 0 .. 59,
-                        expanded = isSecondsSpinnerExpanded,
-                        onExpand = { isSecondsSpinnerExpanded = it },
-                        selectedValue = textTimerSecond.toInt(),
-                        onValueSelected = { second ->
-
-                            textTimerSecond = second.toString()
-
-                            timerViewModel
-                                .setStartTimeInMillis(
-                                    getTimeInMillis(
-                                        textTimerHour.toInt(),
-                                        textTimerMinute.toInt(),
-                                        second
-                                    )
-                                )
-                            },
+                    TimeInput(
+                        text = getLeftPaddedNumberString(timerSecond),
+                        readOnly = true,
+                        enabled = false,
+                        onClick = {
+                            showTimePickerDialog = true
+                        }
                     )
                     TextLabel(
                         Modifier.padding(
@@ -223,7 +213,6 @@ fun SettingsScreen(
                         text = defuseCode,
                         maxLength = 8,
                         onValueChange = {  timerViewModel.setDefuseCode(it) },
-//                        isError = defuseCode.isEmpty()
                     )
                 }
 
