@@ -53,7 +53,7 @@ fun SettingsScreen(
     val fullTimerText = timerViewModel.getTimeString()
     val penalty by timerViewModel.penalty
     val defuseCode by timerViewModel.defuseCode
-    val tickSoundEnabled by timerViewModel.tickSoundEnabled
+    var tickSoundEnabled by timerViewModel.tickSoundEnabled
 
     var timerHour by remember { mutableStateOf(0) }
     var timerMinute by remember { mutableStateOf(0) }
@@ -235,10 +235,15 @@ fun SettingsScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextLabel(
-                        Modifier.padding(
-                            top = labelTopPadding,
-                            bottom = labelHorizontalPadding),
-                            text = stringResource(id = R.string.ticking_sound_checkbox_label)
+                        Modifier
+                            .padding(
+                                top = labelTopPadding,
+                                bottom = labelHorizontalPadding
+                            )
+                            .clickable {
+                                 tickSoundEnabled = !tickSoundEnabled
+                            },
+                        text = stringResource(id = R.string.ticking_sound_checkbox_label)
                     )
                     SettingsCheckBox(
 
