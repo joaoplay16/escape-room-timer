@@ -17,4 +17,7 @@
     <string name="defuse_text">Defused!</string>
     <string name="arrow_back_icon_content_description">Back</string>
     <string name="settings_icon_content_description">Settings</string>
+    <string name="rating_dialog_title" translatable="false">Give your review I\'ll appreciate this</string>
+    <string name="rating_dialog_positive_button" translatable="false">Sure I\'ll do it now</string>
+    <string name="rating_dialog_negative_button" translatable="false">Maybe later</string>
 </resources>

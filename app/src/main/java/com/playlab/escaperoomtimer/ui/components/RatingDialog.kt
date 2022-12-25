@@ -7,9 +7,11 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.playlab.escaperoomtimer.R
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 
 @Composable
@@ -58,7 +60,7 @@ fun RatingDialog(
                         modifier = Modifier
                             .weight(1f)
                             .padding(top = 10.dp, bottom = 15.dp, start = 10.dp, end = 25.dp)
-                            .clickable { onOkClick()  },
+                            .clickable { onOkClick() },
                         text = positiveButtonText,
                         color = MaterialTheme.colors.onPrimary.copy(0.9f),
                         style = MaterialTheme.typography.body2,
@@ -78,10 +80,12 @@ fun PreviewRatingDialog() {
     EscapeRoomTimerTheme(true) {
         Surface {
             RatingDialog(
-                title = "Give your review I'll appreciate this",
-                positiveButtonText = "Sure I'll do it now",
-                negativeButtonText = "Maybe later",
-                modifier = Modifier.fillMaxWidth())
+                title = stringResource(id = R.string.rating_dialog_title),
+                modifier = Modifier.fillMaxWidth(),
+                negativeButtonText = stringResource(id = R.string.rating_dialog_negative_button),
+                positiveButtonText = stringResource(id = R.string.rating_dialog_positive_button)
+
+            )
         }
     }
 }
