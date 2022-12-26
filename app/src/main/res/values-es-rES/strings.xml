@@ -14,4 +14,7 @@
     <string name="arrow_back_icon_content_description">Atrás</string>
     <string name="settings_icon_content_description">Configuraciones</string>
     <string name="stop_timer_message">¿Detener el temporizador en curso?</string>
+    <string name="rating_dialog_title" translatable="false">Hola, si te gusta esta aplicación, por favor danos tu calificación o sugerencia.</string>
+    <string name="rating_dialog_negative_button">Después</string>
+    <string name="rating_dialog_positive_button">¡Cuenta conmigo!</string>
 </resources>
