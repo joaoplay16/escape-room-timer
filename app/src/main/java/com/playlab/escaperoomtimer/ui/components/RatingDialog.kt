@@ -12,6 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.playlab.escaperoomtimer.R
+import com.playlab.escaperoomtimer.ui.animations.RatingAnimation
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 
 @Composable
@@ -33,12 +34,13 @@ fun RatingDialog(
             )
         },
         text = {
-            Text(
-            modifier = Modifier.fillMaxWidth(),
-                style = MaterialTheme.typography.h6,
-                text = "\uD83D\uDCA3 \uD83D\uDCA3 \uD83D\uDCA3 \uD83D\uDCA3 \uD83D\uDCA3 ",
-                textAlign = TextAlign.Center
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                RatingAnimation(travelDistance = 14.dp)
+            }
         },
         buttons = {
             Row(
@@ -50,7 +52,7 @@ fun RatingDialog(
                     Text(
                         modifier = Modifier
                             .weight(1f)
-                            .padding(top = 10.dp, bottom = 15.dp, start = 25.dp, end = 15.dp)
+                            .padding( bottom = 15.dp, start = 25.dp, end = 15.dp)
                             .clickable { onCancelClick() },
                         text = negativeButtonText,
                         color = MaterialTheme.colors.onSurface.copy(alpha = 0.7f),
@@ -59,7 +61,7 @@ fun RatingDialog(
                     Text(
                         modifier = Modifier
                             .weight(1f)
-                            .padding(top = 10.dp, bottom = 15.dp, start = 10.dp, end = 25.dp)
+                            .padding( bottom = 15.dp, start = 10.dp, end = 25.dp)
                             .clickable { onOkClick() },
                         text = positiveButtonText,
                         color = MaterialTheme.colors.onPrimary.copy(0.9f),
