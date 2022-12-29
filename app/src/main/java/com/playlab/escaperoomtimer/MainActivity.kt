@@ -18,6 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.playlab.escaperoomtimer.ui.data.preferences.PreferencesDataStore
 import com.playlab.escaperoomtimer.ui.screens.ScreenRoutes
 import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.screens.home.HomeScreen
@@ -25,6 +26,7 @@ import com.playlab.escaperoomtimer.ui.screens.settings.SettingsScreen
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 
@@ -34,8 +36,19 @@ class MainActivity : ComponentActivity() {
 
     val timerViewModel: TimerViewModel by viewModels()
 
+    lateinit var preferencesDataStore: PreferencesDataStore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        preferencesDataStore = PreferencesDataStore(this)
+
+        CoroutineScope(Dispatchers.Main).launch{
+            val appOpensCount = preferencesDataStore.appOpensCount.firstOrNull()
+            appOpensCount?.let {
+                preferencesDataStore.setAppOpensCount(appOpensCount + 1)
+            }
+        }
 
         setContent {
             EscapeRoomTimerTheme (darkTheme = true){
@@ -50,7 +63,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
     }
 
     private fun startTimer(timerViewModel: TimerViewModel){
