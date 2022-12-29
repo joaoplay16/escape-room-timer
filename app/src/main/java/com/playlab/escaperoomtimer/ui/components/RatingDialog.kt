@@ -21,9 +21,9 @@ fun RatingDialog(
     title: String,
     positiveButtonText: String,
     negativeButtonText: String,
-    onOkClick: () -> Unit = {},
-    onCancelClick: () -> Unit = {},
-    onDismiss: () -> Unit = {},
+    onOkClick: () -> Unit,
+    onCancelClick: () -> Unit,
+    onDismiss: () -> Unit,
 
 ) {
     AlertDialog(
@@ -85,8 +85,10 @@ fun PreviewRatingDialog() {
                 title = stringResource(id = R.string.rating_dialog_title),
                 modifier = Modifier.fillMaxWidth(),
                 negativeButtonText = stringResource(id = R.string.rating_dialog_negative_button),
-                positiveButtonText = stringResource(id = R.string.rating_dialog_positive_button)
-
+                positiveButtonText = stringResource(id = R.string.rating_dialog_positive_button),
+                onDismiss = { },
+                onOkClick = { },
+                onCancelClick = { }
             )
         }
     }
