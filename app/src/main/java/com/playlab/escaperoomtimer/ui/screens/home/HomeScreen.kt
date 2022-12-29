@@ -15,18 +15,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.playlab.escaperoomtimer.R
 import com.playlab.escaperoomtimer.ui.DevicesPreviews
-import com.playlab.escaperoomtimer.ui.components.BigSecretCodeInput
-import com.playlab.escaperoomtimer.ui.components.CountDownTimer
-import com.playlab.escaperoomtimer.ui.components.Keypad
-import com.playlab.escaperoomtimer.ui.components.TextLabel
+import com.playlab.escaperoomtimer.ui.components.*
+import com.playlab.escaperoomtimer.ui.data.preferences.PreferencesDataStore
 import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
+import kotlinx.coroutines.flow.first
 
 @Composable
 fun HomeScreen(
@@ -63,6 +63,28 @@ fun HomeScreen(
         val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
 
         val code by timerViewModel.inputCode
+
+        var showRatingDialog by remember { mutableStateOf( false ) }
+
+        val preferencesDataStore = PreferencesDataStore(LocalContext.current)
+
+        LaunchedEffect(key1 = Any(), block = {
+            val appOpensCount = preferencesDataStore.appOpensCount.first()
+
+            if(appOpensCount % 2 != 0) showRatingDialog = true
+        })
+
+
+        if(showRatingDialog){
+            RatingDialog(
+                title = stringResource(id = R.string.rating_dialog_title),
+                negativeButtonText = stringResource(id = R.string.rating_dialog_negative_button),
+                positiveButtonText = stringResource(id = R.string.rating_dialog_positive_button),
+                onDismiss = {showRatingDialog = false },
+                onOkClick = { showRatingDialog = false },
+                onCancelClick = { showRatingDialog = false}
+            )
+        }
 
         Row(modifier = Modifier.fillMaxSize()) {
             Column(
