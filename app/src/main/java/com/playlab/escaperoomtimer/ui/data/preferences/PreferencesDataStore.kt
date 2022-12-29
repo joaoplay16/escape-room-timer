@@ -16,14 +16,14 @@ class PreferencesDataStore (val context: Context) {
         val FIRST_OPEN_KEY = stringPreferencesKey("first_open")
     }
 
-    val isFirstOpen: Flow<Boolean?> = context.dataStore.data
+    val appOpensCount: Flow<Int> = context.dataStore.data
         .map { preferences ->
-            preferences[FIRST_OPEN_KEY].toBoolean()
+            preferences[FIRST_OPEN_KEY]?.toInt() ?: 0
         }
 
-    suspend fun setIsFirstOpen(isFirstOpen: Boolean){
+    suspend fun setAppOpensCount(count: Int){
         context.dataStore.edit { preferences ->
-            preferences[FIRST_OPEN_KEY] = isFirstOpen.toString()
+            preferences[FIRST_OPEN_KEY] = count.toString()
         }
     }
 }
