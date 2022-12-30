@@ -26,6 +26,7 @@ import com.playlab.escaperoomtimer.ui.components.*
 import com.playlab.escaperoomtimer.ui.data.preferences.PreferencesDataStore
 import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 
 @Composable
@@ -70,7 +71,7 @@ fun HomeScreen(
 
         LaunchedEffect(key1 = Any(), block = {
             val appOpensCount = preferencesDataStore.appOpensCount.first()
-
+            delay(2000)
             if(appOpensCount % 2 != 0) showRatingDialog = true
         })
 
