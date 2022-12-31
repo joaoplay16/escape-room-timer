@@ -13,7 +13,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -144,6 +143,7 @@ class MainActivity : ComponentActivity() {
 
         var dialogDismissed by remember { mutableStateOf( false ) }
         var showRatingDialog by remember { mutableStateOf( false ) }
+        var isRateButtonClicked by remember { mutableStateOf( false ) }
 
         NavHost(
             modifier = modifier,
@@ -152,15 +152,14 @@ class MainActivity : ComponentActivity() {
         ){
             composable(ScreenRoutes.Home.name){
 
-                val preferencesDataStore = PreferencesDataStore(LocalContext.current)
-
                 LaunchedEffect(key1 =  timerViewModel.timeUntilFinishInMillis.value) {
                     val appOpensCount = preferencesDataStore.appOpensCount.first()
+                    isRateButtonClicked = preferencesDataStore.isRateButtonClicked.first()
                     delay(2000)
                     if(appOpensCount % 2 != 0) showRatingDialog = true
                 }
 
-                if(showRatingDialog && dialogDismissed.not()){
+                if(showRatingDialog && dialogDismissed.not() && isRateButtonClicked.not()){
                     RatingDialog(
                         title = stringResource(id = R.string.rating_dialog_title),
                         negativeButtonText = stringResource(id = R.string.rating_dialog_negative_button),
@@ -169,8 +168,17 @@ class MainActivity : ComponentActivity() {
                             showRatingDialog = false
                             dialogDismissed = true
                         },
-                        onOkClick = { showRatingDialog = false },
-                        onCancelClick = { showRatingDialog = false}
+                        onOkClick = {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                preferencesDataStore.setRateButtonClicked(true)
+                            }
+                            showRatingDialog = false
+                            dialogDismissed = true
+                        },
+                        onCancelClick = {
+                            showRatingDialog = false
+                            dialogDismissed = true
+                        }
                     )
                 }
 
