@@ -14,6 +14,7 @@ class PreferencesDataStore (val context: Context) {
 
     companion object {
         val FIRST_OPEN_KEY = stringPreferencesKey("first_open")
+        val RATE_BUTTON_CLICKED_kEY = stringPreferencesKey("rate_button_clicked")
     }
 
     val appOpensCount: Flow<Int> = context.dataStore.data
@@ -24,6 +25,17 @@ class PreferencesDataStore (val context: Context) {
     suspend fun setAppOpensCount(count: Int){
         context.dataStore.edit { preferences ->
             preferences[FIRST_OPEN_KEY] = count.toString()
+        }
+    }
+
+    val isRateButtonClicked: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            preferences[RATE_BUTTON_CLICKED_kEY]?.toBoolean() ?: false
+        }
+
+    suspend fun setRateButtonClicked(isRateButtonClicked: Boolean){
+        context.dataStore.edit { preferences ->
+            preferences[RATE_BUTTON_CLICKED_kEY] = isRateButtonClicked.toString()
         }
     }
 }
