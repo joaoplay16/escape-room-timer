@@ -11,13 +11,15 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.playlab.escaperoomtimer.ui.components.RatingDialog
 import com.playlab.escaperoomtimer.ui.data.preferences.PreferencesDataStore
 import com.playlab.escaperoomtimer.ui.screens.ScreenRoutes
 import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
@@ -26,6 +28,8 @@ import com.playlab.escaperoomtimer.ui.screens.settings.SettingsScreen
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -138,12 +142,38 @@ class MainActivity : ComponentActivity() {
         val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
         val penalty by timerViewModel.penalty
 
+        var dialogDismissed by remember { mutableStateOf( false ) }
+        var showRatingDialog by remember { mutableStateOf( false ) }
+
         NavHost(
             modifier = modifier,
             navController = navController,
             startDestination = startDestination,
         ){
             composable(ScreenRoutes.Home.name){
+
+                val preferencesDataStore = PreferencesDataStore(LocalContext.current)
+
+                LaunchedEffect(key1 =  timerViewModel.timeUntilFinishInMillis.value) {
+                    val appOpensCount = preferencesDataStore.appOpensCount.first()
+                    delay(2000)
+                    if(appOpensCount % 2 != 0) showRatingDialog = true
+                }
+
+                if(showRatingDialog && dialogDismissed.not()){
+                    RatingDialog(
+                        title = stringResource(id = R.string.rating_dialog_title),
+                        negativeButtonText = stringResource(id = R.string.rating_dialog_negative_button),
+                        positiveButtonText = stringResource(id = R.string.rating_dialog_positive_button),
+                        onDismiss = {
+                            showRatingDialog = false
+                            dialogDismissed = true
+                        },
+                        onOkClick = { showRatingDialog = false },
+                        onCancelClick = { showRatingDialog = false}
+                    )
+                }
+
                 HomeScreen(
                     timerViewModel = timerViewModel,
                     onKeypadOk = {

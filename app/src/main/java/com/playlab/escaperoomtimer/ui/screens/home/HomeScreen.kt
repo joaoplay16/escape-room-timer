@@ -1,6 +1,7 @@
 package com.playlab.escaperoomtimer.ui.screens.home
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -28,6 +29,7 @@ import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -64,28 +66,6 @@ fun HomeScreen(
         val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
 
         val code by timerViewModel.inputCode
-
-        var showRatingDialog by remember { mutableStateOf( false ) }
-
-        val preferencesDataStore = PreferencesDataStore(LocalContext.current)
-
-        LaunchedEffect(key1 = Any(), block = {
-            val appOpensCount = preferencesDataStore.appOpensCount.first()
-            delay(2000)
-            if(appOpensCount % 2 != 0) showRatingDialog = true
-        })
-
-
-        if(showRatingDialog){
-            RatingDialog(
-                title = stringResource(id = R.string.rating_dialog_title),
-                negativeButtonText = stringResource(id = R.string.rating_dialog_negative_button),
-                positiveButtonText = stringResource(id = R.string.rating_dialog_positive_button),
-                onDismiss = {showRatingDialog = false },
-                onOkClick = { showRatingDialog = false },
-                onCancelClick = { showRatingDialog = false}
-            )
-        }
 
         Row(modifier = Modifier.fillMaxSize()) {
             Column(
