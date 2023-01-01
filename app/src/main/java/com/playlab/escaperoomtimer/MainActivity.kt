@@ -1,5 +1,7 @@
 package com.playlab.escaperoomtimer
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -169,11 +171,29 @@ class MainActivity : ComponentActivity() {
                             dialogDismissed = true
                         },
                         onOkClick = {
+
                             CoroutineScope(Dispatchers.IO).launch {
                                 preferencesDataStore.setRateButtonClicked(true)
                             }
+
                             showRatingDialog = false
                             dialogDismissed = true
+
+                            val appPackageName =  BuildConfig.APPLICATION_ID
+                            val marketIntent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("market://details?id=${appPackageName}")
+                            )
+                            val browserIntent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=${appPackageName}")
+                            )
+
+                            try {
+                                startActivity(marketIntent)
+                            }catch (e: ActivityNotFoundException){
+                                startActivity(browserIntent)
+                            }
                         },
                         onCancelClick = {
                             showRatingDialog = false
