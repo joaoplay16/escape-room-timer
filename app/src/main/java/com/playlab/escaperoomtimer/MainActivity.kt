@@ -2,9 +2,7 @@ package com.playlab.escaperoomtimer
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.activity.ComponentActivity
@@ -27,6 +25,7 @@ import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.screens.home.HomeScreen
 import com.playlab.escaperoomtimer.ui.screens.settings.SettingsScreen
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
+import com.playlab.escaperoomtimer.util.SoundEffects.playSound
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -79,7 +78,7 @@ class MainActivity : ComponentActivity() {
             timer = object : CountDownTimer(timeUntilFinishInMillis, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
 
-                    if (tickSoundEnabled) playSound(R.raw.beep)
+                    if (tickSoundEnabled)  playSound(this@MainActivity, R.raw.beep)
 
                     timerViewModel.setTimeUntilFinishInMillis(millisUntilFinished)
                 }
@@ -87,7 +86,7 @@ class MainActivity : ComponentActivity() {
                 override fun onFinish() {
                     timerViewModel.resetTimer()
                     timerViewModel.setStartTimeInMillis(0L)
-                    playSound(R.raw.bomb_explosion)
+                    playSound(this@MainActivity, R.raw.bomb_explosion)
                     cancel()
                 }
             }.start()
@@ -107,28 +106,6 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         startTimer(timerViewModel)
-    }
-
-    fun playSound(resId: Int){
-        val context = this@MainActivity
-        CoroutineScope(Dispatchers.IO).launch {
-            val mp = MediaPlayer()
-
-            try{
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    mp.setDataSource(context.resources.openRawResourceFd(resId))
-                }else{
-                    val uri: Uri = Uri.parse(
-                        "android.resource://${context.packageName}/$resId"
-                    )
-                    mp.setDataSource(context, uri)
-                }
-                mp.prepare()
-                mp.start()
-            }catch (e: Exception){
-                e.printStackTrace()
-            }
-        }
     }
 
     @Composable
@@ -210,9 +187,9 @@ class MainActivity : ComponentActivity() {
                                 stopTimer()
                                 timerViewModel.resetTimer()
                                 timerViewModel.setStartTimeInMillis(0)
-                                playSound(R.raw.bomb_has_been_defused)
+                                playSound(this@MainActivity, R.raw.bomb_has_been_defused)
                             }else{
-                                playSound(R.raw.error)
+                                playSound(this@MainActivity, R.raw.error)
                                 stopTimer()
                                 timerViewModel.setInputCode("")
 
