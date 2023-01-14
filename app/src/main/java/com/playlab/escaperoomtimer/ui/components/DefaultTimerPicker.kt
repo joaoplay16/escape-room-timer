@@ -1,4 +1,4 @@
-package com.example.testcompose
+package com.playlab.escaperoomtimer.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log

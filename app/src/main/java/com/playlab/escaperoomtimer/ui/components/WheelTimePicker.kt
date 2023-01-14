@@ -1,4 +1,4 @@
-package com.example.testcompose
+package com.playlab.escaperoomtimer.ui.components
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
