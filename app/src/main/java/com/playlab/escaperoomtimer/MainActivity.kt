@@ -13,6 +13,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -25,13 +26,10 @@ import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.screens.home.HomeScreen
 import com.playlab.escaperoomtimer.ui.screens.settings.SettingsScreen
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
-import com.playlab.escaperoomtimer.util.SoundEffects.playSound
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import com.playlab.escaperoomtimer.util.SoundEffects
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
@@ -42,10 +40,13 @@ class MainActivity : ComponentActivity() {
 
     lateinit var preferencesDataStore: PreferencesDataStore
 
+    lateinit var soundEffects: SoundEffects
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         preferencesDataStore = PreferencesDataStore(this)
+        soundEffects = SoundEffects(this)
 
         CoroutineScope(Dispatchers.Main).launch{
             val appOpensCount = preferencesDataStore.appOpensCount.firstOrNull()
@@ -78,7 +79,7 @@ class MainActivity : ComponentActivity() {
             timer = object : CountDownTimer(timeUntilFinishInMillis, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
 
-                    if (tickSoundEnabled)  playSound(this@MainActivity, R.raw.beep)
+                    if (tickSoundEnabled)  soundEffects.playSound(R.raw.beep)
 
                     timerViewModel.setTimeUntilFinishInMillis(millisUntilFinished)
                 }
@@ -86,7 +87,7 @@ class MainActivity : ComponentActivity() {
                 override fun onFinish() {
                     timerViewModel.resetTimer()
                     timerViewModel.setStartTimeInMillis(0L)
-                    playSound(this@MainActivity, R.raw.bomb_explosion)
+                    soundEffects.playSound(R.raw.bomb_explosion)
                     cancel()
                 }
             }.start()
@@ -123,6 +124,9 @@ class MainActivity : ComponentActivity() {
         var dialogDismissed by remember { mutableStateOf( false ) }
         var showRatingDialog by remember { mutableStateOf( false ) }
         var isRateButtonClicked by remember { mutableStateOf( false ) }
+
+        val context = LocalContext.current
+        val sfx = remember { SoundEffects(context) }
 
         NavHost(
             modifier = modifier,
@@ -187,9 +191,9 @@ class MainActivity : ComponentActivity() {
                                 stopTimer()
                                 timerViewModel.resetTimer()
                                 timerViewModel.setStartTimeInMillis(0)
-                                playSound(this@MainActivity, R.raw.bomb_has_been_defused)
+                                sfx.playSound( R.raw.bomb_has_been_defused)
                             }else{
-                                playSound(this@MainActivity, R.raw.error)
+                                sfx.playSound(R.raw.error)
                                 stopTimer()
                                 timerViewModel.setInputCode("")
 

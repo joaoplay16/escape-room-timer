@@ -5,11 +5,11 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 
-object SoundEffects {
+class SoundEffects(val context: Context) {
 
     private var mp: MediaPlayer? = null
 
-    fun playSound(context: Context, resId: Int) {
+    fun playSound(resId: Int) {
 
         if (mp != null) {
             try {
