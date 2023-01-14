@@ -135,14 +135,18 @@ class MainActivity : ComponentActivity() {
         ){
             composable(ScreenRoutes.Home.name){
 
-                LaunchedEffect(key1 =  timerViewModel.timeUntilFinishInMillis.value) {
+                LaunchedEffect(key1 =  null) {
                     val appOpensCount = preferencesDataStore.appOpensCount.first()
                     isRateButtonClicked = preferencesDataStore.isRateButtonClicked.first()
                     delay(2000)
                     if(appOpensCount % 2 != 0) showRatingDialog = true
                 }
 
-                if(showRatingDialog && dialogDismissed.not() && isRateButtonClicked.not()){
+                if( showRatingDialog
+                    && dialogDismissed.not()
+                    && isRateButtonClicked.not()
+                    && timeUntilFinish == 0L ){
+
                     RatingDialog(
                         title = stringResource(id = R.string.rating_dialog_title),
                         negativeButtonText = stringResource(id = R.string.rating_dialog_negative_button),
