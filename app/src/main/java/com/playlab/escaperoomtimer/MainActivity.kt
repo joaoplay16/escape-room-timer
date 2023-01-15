@@ -118,6 +118,7 @@ class MainActivity : ComponentActivity() {
     ) {
 
         val isDefused = timerViewModel.isDefused()
+        val isStopped = timerViewModel.isStopped()
         val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
         val penalty by timerViewModel.penalty
 
@@ -145,7 +146,7 @@ class MainActivity : ComponentActivity() {
                 if( showRatingDialog
                     && dialogDismissed.not()
                     && isRateButtonClicked.not()
-                    && timeUntilFinish == 0L ){
+                    && isStopped ){
 
                     RatingDialog(
                         title = stringResource(id = R.string.rating_dialog_title),
@@ -190,7 +191,7 @@ class MainActivity : ComponentActivity() {
                 HomeScreen(
                     timerViewModel = timerViewModel,
                     onKeypadOk = {
-                        if(timeUntilFinish > 0){
+                        if(isDefused.not()){
                             if(isDefused){
                                 stopTimer()
                                 timerViewModel.resetTimer()

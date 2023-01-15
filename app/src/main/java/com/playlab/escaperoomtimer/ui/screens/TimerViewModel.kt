@@ -54,6 +54,10 @@ class TimerViewModel : ViewModel() {
         )
     }
 
+    fun isStopped(): Boolean{
+        return timeUntilFinishInMillis.value == 0L
+    }
+
     fun isDefused(): Boolean{
         return inputCode.value == defuseCode.value
     }
