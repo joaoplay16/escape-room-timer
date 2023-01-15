@@ -21,6 +21,9 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.playlab.escaperoomtimer.R
@@ -108,7 +111,11 @@ fun SettingsScreen(
                         },
                         fontSize = dimensionResource(id = R.dimen.small_timer_font_size).value.sp,
                         paddingValues = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
-                        shape = RoundedCornerShape(50.dp)
+                        shape = RoundedCornerShape(50.dp),
+                        textStyle = TextStyle(
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.Bold
+                        )
                     )
                 }
             }
