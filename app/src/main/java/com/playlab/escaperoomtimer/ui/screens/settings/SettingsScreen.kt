@@ -54,6 +54,7 @@ fun SettingsScreen(
     val penalty by timerViewModel.penalty
     val defuseCode by timerViewModel.defuseCode
     var tickSoundEnabled by timerViewModel.tickSoundEnabled
+    val isStopped = timerViewModel.isStopped()
 
     var timerHour by remember { mutableStateOf(0) }
     var timerMinute by remember { mutableStateOf(0) }
@@ -99,13 +100,15 @@ fun SettingsScreen(
                         fontSize = dimensionResource(id = R.dimen.screen_title_font_size).value.sp,
                         text = fullTimerText
                     )
-                    ActionButton(
-                        buttonText = stringResource(id = R.string.stop_button_text),
-                        onClick = {
-                            if(timeUntilFinish > 0) showDialog = true
-                        },
-                        paddingValues = PaddingValues(horizontal = 10.dp, vertical = 0.dp)
-                    )
+                    if(isStopped.not()) {
+                        ActionButton(
+                            buttonText = stringResource(id = R.string.stop_button_text),
+                            onClick = {
+                                if (timeUntilFinish > 0) showDialog = true
+                            },
+                            paddingValues = PaddingValues(horizontal = 10.dp, vertical = 0.dp)
+                        )
+                    }
                 }
             }
         }
