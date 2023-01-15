@@ -7,8 +7,10 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.playlab.escaperoomtimer.R
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 
 @Composable
@@ -35,15 +37,15 @@ fun TimerDialog(
                         modifier = Modifier
                             .padding(top = 10.dp, bottom = 15.dp, start = 10.dp, end = 15.dp)
                             .clickable { onCancelClick() },
-                        text = "No",
+                        text = stringResource(id = R.string.stop_timer_dialog_no_button),
                         color = MaterialTheme.colors.onSurface,
                         style = MaterialTheme.typography.overline
                     )
                     Text(
                         modifier = Modifier
                             .padding(top = 10.dp, bottom = 15.dp, start = 10.dp, end = 20.dp)
-                            .clickable { onOkClick()  },
-                        text = "Yes",
+                            .clickable { onOkClick() },
+                        text = stringResource(id = R.string.stop_timer_dialog_yes_button),
                         color = MaterialTheme.colors.onSurface,
                         style = MaterialTheme.typography.overline
                     )

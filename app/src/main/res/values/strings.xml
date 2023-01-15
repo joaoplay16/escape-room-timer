@@ -20,4 +20,6 @@
     <string name="rating_dialog_title">Hey, if you like this app, please give us your rating or suggestion.</string>
     <string name="rating_dialog_positive_button">Roger that!</string>
     <string name="rating_dialog_negative_button">Maybe later</string>
+    <string name="stop_timer_dialog_yes_button">yes</string>
+    <string name="stop_timer_dialog_no_button">no</string>
 </resources>

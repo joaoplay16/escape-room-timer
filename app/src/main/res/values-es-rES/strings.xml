@@ -17,4 +17,6 @@
     <string name="rating_dialog_title" translatable="false">Hola, si te gusta esta aplicación, por favor danos tu calificación o sugerencia.</string>
     <string name="rating_dialog_negative_button">Después</string>
     <string name="rating_dialog_positive_button">¡Cuenta conmigo!</string>
+    <string name="stop_timer_dialog_yes_button">sí</string>
+    <string name="stop_timer_dialog_no_button">no</string>
 </resources>
