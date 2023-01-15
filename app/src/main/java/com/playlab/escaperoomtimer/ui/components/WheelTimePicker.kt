@@ -1,8 +1,11 @@
 package com.playlab.escaperoomtimer.ui.components
 
 import android.util.Log
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.gestures.snapping.SnapFlingBehavior
+import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -11,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -27,17 +31,25 @@ fun WheelTimePicker(
     content: @Composable (index: Int) -> Unit
 ) {
     val listState = rememberLazyListState(0)
-    val flingBehavior = rememberSnapFlingBehavior(listState)
     val isScrollInProgress = listState.isScrollInProgress
+
+    val snapFlingBehavior = SnapFlingBehavior(
+        snapLayoutInfoProvider = SnapLayoutInfoProvider(listState),
+        lowVelocityAnimationSpec = tween(0),
+        highVelocityAnimationSpec = rememberSplineBasedDecay(),
+        snapAnimationSpec = tween(200),
+        density = LocalDensity.current,
+        shortSnapVelocityThreshold = 0.dp
+    )
 
     LaunchedEffect(key1 = startIndex){
         listState.scrollToItem(index = startIndex)
     }
 
     LaunchedEffect(isScrollInProgress) {
-        if(!isScrollInProgress) {
+//        if(!isScrollInProgress) {
             onScrollFinished(  calculateSnappedItemIndex(listState))
-        }
+//        }
     }
 
     LazyColumn(
@@ -46,7 +58,7 @@ fun WheelTimePicker(
             .width(size.width / 2),
         state = listState,
         contentPadding = PaddingValues(vertical = size.height / 3),
-        flingBehavior = flingBehavior
+        flingBehavior = snapFlingBehavior
     ) {
         items(count) { index ->
             Box(
