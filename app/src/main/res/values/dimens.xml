@@ -20,6 +20,7 @@
     <dimen name="big_timer_top_padding">0dp</dimen>
     <dimen name="big_timer_bottom_padding">0dp</dimen>
 
+    <dimen name="small_timer_font_size">16sp</dimen>
     <dimen name="screen_title_font_size">20sp</dimen>
     <dimen name="text_label_font_size">18sp</dimen>
     <dimen name="input_text_font_size">18sp</dimen>

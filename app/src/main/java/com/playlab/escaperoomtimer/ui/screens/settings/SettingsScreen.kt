@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -95,20 +96,20 @@ fun SettingsScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextLabel(
-                        modifier = Modifier.padding(end = 10.dp),
-                        fontSize = dimensionResource(id = R.dimen.screen_title_font_size).value.sp,
-                        text = fullTimerText
+//                    TextLabel(
+//                        modifier = Modifier.padding(end = 10.dp),
+//                        fontSize = dimensionResource(id = R.dimen.small_timer_font_size).value.sp,
+//                        text = fullTimerText
+//                    )
+                    ActionButton(
+                        buttonText = fullTimerText,
+                        onClick = {
+                            if (isStopped.not()) showDialog = true
+                        },
+                        fontSize = dimensionResource(id = R.dimen.small_timer_font_size).value.sp,
+                        paddingValues = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
+                        shape = RoundedCornerShape(50.dp)
                     )
-                    if(isStopped.not()) {
-                        ActionButton(
-                            buttonText = stringResource(id = R.string.stop_button_text),
-                            onClick = {
-                                if (timeUntilFinish > 0) showDialog = true
-                            },
-                            paddingValues = PaddingValues(horizontal = 10.dp, vertical = 0.dp)
-                        )
-                    }
                 }
             }
         }
@@ -147,9 +148,9 @@ fun SettingsScreen(
                     showDialog = showTimePickerDialog,
                     onDismissRequest = { showTimePickerDialog = false},
                     onTimeSelected = { hour, minute, second ->
-                       timerHour = hour
-                       timerMinute = minute
-                       timerSecond = second
+                        timerHour = hour
+                        timerMinute = minute
+                        timerSecond = second
 
                         timerViewModel.setStartTimeInMillis(
                             getTimeInMillis(
@@ -176,7 +177,7 @@ fun SettingsScreen(
                     TextLabel(
                         Modifier.padding(
                             horizontal = labelHorizontalPadding),
-                            text = stringResource(id = R.string.time_picker_input_hour_label))
+                        text = stringResource(id = R.string.time_picker_input_hour_label))
                     TimeInput(
                         text = getLeftPaddedNumberString(timerMinute),
                         readOnly = true,
@@ -188,7 +189,7 @@ fun SettingsScreen(
                     TextLabel(
                         Modifier.padding(
                             horizontal = labelHorizontalPadding),
-                            text = stringResource(id = R.string.time_picker_input_minute_label)
+                        text = stringResource(id = R.string.time_picker_input_minute_label)
                     )
 
                     TimeInput(
@@ -202,7 +203,7 @@ fun SettingsScreen(
                     TextLabel(
                         Modifier.padding(
                             horizontal = labelHorizontalPadding),
-                            text = stringResource(id = R.string.time_picker_input_second_label)
+                        text = stringResource(id = R.string.time_picker_input_second_label)
                     )
                 }
 
@@ -210,7 +211,7 @@ fun SettingsScreen(
                     Modifier.padding(
                         top = labelTopPadding,
                         bottom = labelBottomPadding),
-                        text = stringResource(id = R.string.defuse_code_input_label))
+                    text = stringResource(id = R.string.defuse_code_input_label))
                 Row(verticalAlignment = Alignment.Bottom) {
                     SecretCodeInput(
                         text = defuseCode,
@@ -223,7 +224,7 @@ fun SettingsScreen(
                     Modifier.padding(
                         top = labelTopPadding,
                         bottom = labelBottomPadding),
-                        text = stringResource(id = R.string.penalty_label)
+                    text = stringResource(id = R.string.penalty_label)
                 )
                 Row(verticalAlignment = Alignment.Bottom) {
                     TimeInput(text = penalty, onValueChange = { timerViewModel.setPenaltyTime(it) })
@@ -244,7 +245,7 @@ fun SettingsScreen(
                                 bottom = labelHorizontalPadding
                             )
                             .clickable {
-                                 tickSoundEnabled = !tickSoundEnabled
+                                tickSoundEnabled = !tickSoundEnabled
                             },
                         text = stringResource(id = R.string.ticking_sound_checkbox_label)
                     )
@@ -285,7 +286,7 @@ fun SettingsScreen(
                         .padding(top = 90.dp)
                         .weight(1f),
 
-                ) {
+                    ) {
                     ActionButton(buttonText = startButtonText, onClick = {
                         if(defuseCode.isEmpty()){
                             Toast.makeText(context, defuseCodeRequiredMessage, Toast.LENGTH_LONG).show()
