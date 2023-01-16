@@ -1,7 +1,6 @@
 package com.playlab.escaperoomtimer.ui.screens.home
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,20 +15,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.playlab.escaperoomtimer.R
 import com.playlab.escaperoomtimer.ui.DevicesPreviews
-import com.playlab.escaperoomtimer.ui.components.*
-import com.playlab.escaperoomtimer.ui.data.preferences.PreferencesDataStore
+import com.playlab.escaperoomtimer.ui.components.BigSecretCodeInput
+import com.playlab.escaperoomtimer.ui.components.CountDownTimer
+import com.playlab.escaperoomtimer.ui.components.Keypad
+import com.playlab.escaperoomtimer.ui.components.TextLabel
 import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -87,6 +84,7 @@ fun HomeScreen(
 
                 BigSecretCodeInput(
                     text = code.replace(".".toRegex(), "*"),
+                    placeholder = "********",
                     readOnly = true,
                     maxLength = 8
                 )
