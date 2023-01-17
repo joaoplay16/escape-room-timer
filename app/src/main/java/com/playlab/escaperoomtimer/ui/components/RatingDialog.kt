@@ -7,10 +7,12 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.playlab.escaperoomtimer.R
 import com.playlab.escaperoomtimer.ui.animations.RatingAnimation
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
@@ -30,7 +32,8 @@ fun RatingDialog(
         title = {
             Text(
                 style = MaterialTheme.typography.h6,
-                text = title
+                text = title,
+                fontSize = dimensionResource(id = R.dimen.dialog_title_font_size).value.sp
             )
         },
         text = {
@@ -56,7 +59,8 @@ fun RatingDialog(
                             .clickable { onCancelClick() },
                         text = negativeButtonText,
                         color = MaterialTheme.colors.onSurface.copy(alpha = 0.7f),
-                        style = MaterialTheme.typography.body2
+                        style = MaterialTheme.typography.body2,
+                        fontSize = dimensionResource(id = R.dimen.dialog_button_font_size).value.sp
                     )
                     Text(
                         modifier = Modifier
@@ -66,7 +70,8 @@ fun RatingDialog(
                         text = positiveButtonText,
                         color = MaterialTheme.colors.onPrimary.copy(0.9f),
                         style = MaterialTheme.typography.body2,
-                        textAlign = TextAlign.End
+                        textAlign = TextAlign.End,
+                        fontSize = dimensionResource(id = R.dimen.dialog_button_font_size).value.sp,
                     )
             }
 

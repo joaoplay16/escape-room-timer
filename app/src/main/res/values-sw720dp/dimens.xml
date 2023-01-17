@@ -34,5 +34,7 @@
     <dimen name="label_font_size">24sp</dimen>
     <dimen name="title_font_size">24sp</dimen>
     <dimen name="is_defused_text_font_size">48sp</dimen>
+    <dimen name="dialog_title_font_size">24sp</dimen>
+    <dimen name="dialog_button_font_size">24sp</dimen>
 
 </resources>
