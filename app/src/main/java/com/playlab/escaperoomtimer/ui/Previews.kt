@@ -27,4 +27,11 @@ import androidx.compose.ui.tooling.preview.Preview
     fontScale = 0.9f,
     showSystemUi = true
 )
+@Preview(
+    name = "Nexus 5",
+    group = "Devices",
+    device = Devices.NEXUS_5,
+    uiMode = UI_MODE_NIGHT_YES,
+    showSystemUi = true
+)
 annotation class DevicesPreviews
