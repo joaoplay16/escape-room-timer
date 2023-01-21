@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.CountDownTimer
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -27,26 +26,23 @@ import com.playlab.escaperoomtimer.ui.screens.home.HomeScreen
 import com.playlab.escaperoomtimer.ui.screens.settings.SettingsScreen
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
 import com.playlab.escaperoomtimer.util.SoundEffects
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-
-    var timer: CountDownTimer? = null
 
     val timerViewModel: TimerViewModel by viewModels()
 
     lateinit var preferencesDataStore: PreferencesDataStore
 
-    lateinit var soundEffects: SoundEffects
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         preferencesDataStore = PreferencesDataStore(this)
-        soundEffects = SoundEffects(this)
 
         CoroutineScope(Dispatchers.Main).launch{
             val appOpensCount = preferencesDataStore.appOpensCount.firstOrNull()
@@ -70,45 +66,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun startTimer(timerViewModel: TimerViewModel){
-
-        val timeUntilFinishInMillis by timerViewModel.timeUntilFinishInMillis
-        val startTimeInMillis by timerViewModel.startTimeInMillis
-        val tickSoundEnabled by timerViewModel.tickSoundEnabled
-        if(startTimeInMillis > 0) {
-            timer = object : CountDownTimer(timeUntilFinishInMillis, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-
-                    if (tickSoundEnabled)  soundEffects.playSound(R.raw.beep)
-
-                    timerViewModel.setTimeUntilFinishInMillis(millisUntilFinished)
-                }
-
-                override fun onFinish() {
-                    timerViewModel.resetTimer()
-                    timerViewModel.setStartTimeInMillis(0L)
-                    soundEffects.playSound(R.raw.bomb_explosion)
-                    cancel()
-                }
-            }.start()
-        }
-    }
-
-    private fun stopTimer(){
-        timer?.cancel()
-        timer = null
-    }
-
-    override fun onPause() {
-        super.onPause()
-        stopTimer()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        startTimer(timerViewModel)
-    }
-
     @Composable
     fun DefaultNavHost(
         modifier: Modifier = Modifier,
@@ -118,10 +75,7 @@ class MainActivity : ComponentActivity() {
     ) {
 
         val isDefused = timerViewModel.isDefused()
-        val isStopped = timerViewModel.isStopped()
-        val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
-        val penalty by timerViewModel.penalty
-
+        val isFinished = timerViewModel.isFinished()
         var dialogDismissed by remember { mutableStateOf( false ) }
         var showRatingDialog by remember { mutableStateOf( false ) }
         var isRateButtonClicked by remember { mutableStateOf( false ) }
@@ -146,7 +100,7 @@ class MainActivity : ComponentActivity() {
                 if( showRatingDialog
                     && dialogDismissed.not()
                     && isRateButtonClicked.not()
-                    && isStopped ){
+                    && isFinished ){
 
                     RatingDialog(
                         title = stringResource(id = R.string.rating_dialog_title),
@@ -191,22 +145,13 @@ class MainActivity : ComponentActivity() {
                 HomeScreen(
                     timerViewModel = timerViewModel,
                     onKeypadOk = {
-                        if(isDefused.not()){
-                            if(isDefused){
-                                stopTimer()
-                                timerViewModel.resetTimer()
-                                timerViewModel.setStartTimeInMillis(0)
-                                sfx.playSound( R.raw.bomb_has_been_defused)
-                            }else{
-                                sfx.playSound(R.raw.error)
-                                stopTimer()
-                                timerViewModel.setInputCode("")
-
-                                var timeWithPenalty = timeUntilFinish - (penalty.ifEmpty { "0" }.toInt() * 1000L)
-                                timeWithPenalty = if( timeWithPenalty >= 0) timeWithPenalty else 0
-                                timerViewModel.setTimeUntilFinishInMillis(timeWithPenalty)
-                                startTimer(timerViewModel)
-                            }
+                        if(isDefused){
+                            if(isFinished.not()) sfx.playSound( R.raw.bomb_has_been_defused)
+                            timerViewModel.stopTimer()
+                        }else{
+                            if(isFinished.not()) sfx.playSound(R.raw.error)
+                            timerViewModel.setInputCode("")
+                            timerViewModel.penalize()
                         }
                     },
                     onSettingsClick = {
@@ -216,15 +161,25 @@ class MainActivity : ComponentActivity() {
             }
 
             composable(ScreenRoutes.Settings.name){
+                val tickSoundEnabled by timerViewModel.tickSoundEnabled
+
                 SettingsScreen(
                     timerViewModel = timerViewModel,
                     startCountDownTimer = {
-                        startTimer(timerViewModel)
+                        timerViewModel.startTimer(
+                            action = {
+                                if(tickSoundEnabled) sfx.playSound(R.raw.beep)
+                            },
+                            onFinish = {
+                                if(isDefused.not()) sfx.playSound(R.raw.bomb_explosion)
+                                timerViewModel.stopTimer()
+                            }
+                        )
                         navController.popBackStack()
                     },
                     onArrowBackPressed = { navController.popBackStack() },
                     onStopTimerClick = {
-                        stopTimer()
+                        timerViewModel.stopTimer()
                     }
                 )
             }
