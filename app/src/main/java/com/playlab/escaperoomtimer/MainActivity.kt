@@ -144,16 +144,6 @@ class MainActivity : ComponentActivity() {
 
                 HomeScreen(
                     timerViewModel = timerViewModel,
-                    onKeypadOk = {
-                        if(isDefused){
-                            if(isFinished.not()) sfx.playSound( R.raw.bomb_has_been_defused)
-                            timerViewModel.stopTimer()
-                        }else{
-                            if(isFinished.not()) sfx.playSound(R.raw.error)
-                            timerViewModel.setInputCode("")
-                            timerViewModel.penalize()
-                        }
-                    },
                     onSettingsClick = {
                         navController.navigate(ScreenRoutes.Settings.name)
                     },

@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -27,13 +28,13 @@ import com.playlab.escaperoomtimer.ui.components.Keypad
 import com.playlab.escaperoomtimer.ui.components.TextLabel
 import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
+import com.playlab.escaperoomtimer.util.SoundEffects
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     timerViewModel: TimerViewModel,
     onSettingsClick: () -> Unit = {},
-    onKeypadOk: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -57,6 +58,8 @@ fun HomeScreen(
     ) { paddingValues ->
 
         val orientation = LocalConfiguration.current.orientation
+        val context = LocalContext.current
+        val sfx = remember { SoundEffects(context) }
 
         var isDefused by remember{ mutableStateOf(false) }
         var isFinished by remember{ mutableStateOf(false) }
@@ -64,6 +67,29 @@ fun HomeScreen(
         val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
 
         val code by timerViewModel.inputCode
+
+        val onKeypadOkClick: () -> Unit =  {
+            isDefused = timerViewModel.isDefused()
+            isFinished = timerViewModel.isFinished()
+
+            if(isDefused){
+                if(isFinished.not()) sfx.playSound( R.raw.bomb_has_been_defused)
+                timerViewModel.stopTimer()
+            }else{
+                if(isFinished.not()) sfx.playSound(R.raw.error)
+                timerViewModel.setInputCode("")
+                timerViewModel.penalize()
+            }
+        }
+
+        val onKeypadDigitClick: (String) -> Unit = { digit ->
+            val c = StringBuilder(code).append(digit).toString()
+            timerViewModel.setInputCode(c)
+        }
+
+        val onKeypadDeleteClick: () -> Unit = {
+            timerViewModel.setInputCode(code.dropLast(1))
+        }
 
         Row(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -101,20 +127,10 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.keypad_row_gap)))
 
                 if (orientation == Configuration.ORIENTATION_PORTRAIT){
-
                     Keypad(
-                        onDigitClick = { digit ->
-                            val c = StringBuilder(code).append(digit).toString()
-                            timerViewModel.setInputCode(c)
-                        },
-                        onOkClick = {
-                            isDefused = timerViewModel.isDefused()
-                            isFinished = timerViewModel.isFinished()
-                            onKeypadOk()
-                        },
-                        onDeleteClick = {
-                            timerViewModel.setInputCode(code.dropLast(1))
-                        }
+                        onDigitClick = onKeypadDigitClick,
+                        onOkClick = onKeypadOkClick,
+                        onDeleteClick = onKeypadDeleteClick
                     )
                 }
             }
@@ -125,22 +141,11 @@ fun HomeScreen(
                         .fillMaxSize()
                         .weight(1f),
                     verticalArrangement = Arrangement.Top,
-                    ) {
+                ) {
                     Keypad(
-                        modifier = Modifier
-                            .padding(
-                                top =  dimensionResource(id = R.dimen.big_timer_top_padding)
-                            ),
-                        onDigitClick = { digit ->
-                            val c = StringBuilder(code).append(digit).toString()
-                            timerViewModel.setInputCode(c)
-                        },
-                        onOkClick = {
-                            isDefused = timerViewModel.isDefused()
-                            isFinished = timerViewModel.isFinished()
-                            onKeypadOk()
-                        },
-                        onDeleteClick = { timerViewModel.setInputCode(code.dropLast(1))}
+                        onDigitClick = onKeypadDigitClick,
+                        onOkClick = onKeypadOkClick,
+                        onDeleteClick = onKeypadDeleteClick
                     )
                 }
             }
