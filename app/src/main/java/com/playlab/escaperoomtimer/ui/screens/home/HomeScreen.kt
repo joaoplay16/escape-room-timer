@@ -59,6 +59,7 @@ fun HomeScreen(
         val orientation = LocalConfiguration.current.orientation
 
         var isDefused by remember{ mutableStateOf(false) }
+        var isFinished by remember{ mutableStateOf(false) }
         val timerText = timerViewModel.getTimeString()
         val timeUntilFinish by timerViewModel.timeUntilFinishInMillis
 
@@ -89,7 +90,7 @@ fun HomeScreen(
                     maxLength = 8
                 )
 
-                if(isDefused){
+                if(isDefused && isFinished.not()){
                     TextLabel(
                         text = stringResource(id = R.string.defuse_text),
                         fontSize = dimensionResource(id = R.dimen.is_defused_text_font_size).value.sp,
@@ -108,6 +109,7 @@ fun HomeScreen(
                         },
                         onOkClick = {
                             isDefused = timerViewModel.isDefused()
+                            isFinished = timerViewModel.isFinished()
                             onKeypadOk()
                         },
                         onDeleteClick = {
@@ -135,6 +137,7 @@ fun HomeScreen(
                         },
                         onOkClick = {
                             isDefused = timerViewModel.isDefused()
+                            isFinished = timerViewModel.isFinished()
                             onKeypadOk()
                         },
                         onDeleteClick = { timerViewModel.setInputCode(code.dropLast(1))}
