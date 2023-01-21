@@ -58,7 +58,7 @@ fun SettingsScreen(
     val penalty by timerViewModel.penalty
     val defuseCode by timerViewModel.defuseCode
     var tickSoundEnabled by timerViewModel.tickSoundEnabled
-    val isStopped = timerViewModel.isStopped()
+    val isFinished = timerViewModel.isFinished()
 
     var timerHour by remember { mutableStateOf(0) }
     var timerMinute by remember { mutableStateOf(0) }
@@ -107,7 +107,7 @@ fun SettingsScreen(
                     ActionButton(
                         buttonText = fullTimerText,
                         onClick = {
-                            if (isStopped.not()) showDialog = true
+                            if (isFinished.not()) showDialog = true
                         },
                         fontSize = dimensionResource(id = R.dimen.small_timer_font_size).value.sp,
                         paddingValues = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
@@ -234,7 +234,12 @@ fun SettingsScreen(
                     text = stringResource(id = R.string.penalty_label)
                 )
                 Row(verticalAlignment = Alignment.Bottom) {
-                    TimeInput(text = penalty, onValueChange = { timerViewModel.setPenaltyTime(it) })
+                    TimeInput(
+                        text = if(penalty > 0) penalty.toString() else "",
+                        onValueChange = {
+                          timerViewModel.setPenaltyTime( if( it.isNotBlank() ) it.toInt() else 0 )
+                        }
+                    )
                     TextLabel(
                         Modifier.padding(horizontal = labelHorizontalPadding),
                         text = stringResource(id = R.string.penalty_input_seconds_label)
