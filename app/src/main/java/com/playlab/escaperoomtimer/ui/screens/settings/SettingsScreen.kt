@@ -31,6 +31,7 @@ import com.playlab.escaperoomtimer.ui.DevicesPreviews
 import com.playlab.escaperoomtimer.ui.components.*
 import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
+import com.playlab.escaperoomtimer.util.SoundEffects
 import com.playlab.escaperoomtimer.util.TimeUtil.getLeftPaddedNumberString
 import com.playlab.escaperoomtimer.util.TimeUtil.getTimeInMillis
 
@@ -39,7 +40,6 @@ fun SettingsScreen(
     modifier: Modifier = Modifier,
     timerViewModel: TimerViewModel,
     onArrowBackPressed: ()  -> Unit = {},
-    onStopTimerClick: () -> Unit = {},
     startCountDownTimer: () -> Unit = {},
 ) {
     val labelVerticalPadding = dimensionResource(id = R.dimen.text_label_vertical_padding)
@@ -59,6 +59,7 @@ fun SettingsScreen(
     val defuseCode by timerViewModel.defuseCode
     var tickSoundEnabled by timerViewModel.tickSoundEnabled
     val isFinished = timerViewModel.isFinished()
+    val isDefused = timerViewModel.isDefused()
 
     var timerHour by remember { mutableStateOf(0) }
     var timerMinute by remember { mutableStateOf(0) }
@@ -66,6 +67,8 @@ fun SettingsScreen(
 
     val defuseCodeRequiredMessage = stringResource(id = R.string.defuse_code_required_message)
     val startButtonText = stringResource(id = R.string.start_button_text).uppercase()
+
+    val sfx = remember { SoundEffects(context) }
 
     Scaffold(
         topBar = {
@@ -122,13 +125,34 @@ fun SettingsScreen(
         }
     ) { paddingValues ->
 
+        val onStartButtonClick:  () -> Unit = onStartButtonClick@{
+            if(defuseCode.isEmpty()){
+                Toast.makeText(context, defuseCodeRequiredMessage, Toast.LENGTH_LONG).show()
+                return@onStartButtonClick
+            }
+            if(timeUntilFinish > 0) {
+                showDialog = true
+                return@onStartButtonClick
+            }
+            timerViewModel.setTimeUntilFinishInMillis(startTimeInMillis)
+            timerViewModel.startTimer(
+                action = {
+                    if(tickSoundEnabled) sfx.playSound(R.raw.beep)
+                },
+                onFinish = {
+                    if(isDefused.not()) sfx.playSound(R.raw.bomb_explosion)
+                    timerViewModel.stopTimer()
+                }
+            )
+            startCountDownTimer()
+        }
+
         if (showDialog){
             TimerDialog(
                 title = stringResource(id = R.string.stop_timer_message),
                 onDismiss =  { showDialog = false },
                 onOkClick = {
-                    onStopTimerClick()
-                    timerViewModel.resetTimer()
+                    timerViewModel.stopTimer()
                     showDialog = false
                 },
                 onCancelClick =  { showDialog = false }
@@ -268,6 +292,7 @@ fun SettingsScreen(
                     )
                 }
 
+
                 if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                     Row(
                         Modifier
@@ -275,18 +300,7 @@ fun SettingsScreen(
                             .padding(top = 50.dp), horizontalArrangement = Arrangement.Center
                     ) {
 
-                        ActionButton(buttonText = startButtonText, onClick = {
-                            if(defuseCode.isEmpty()){
-                                Toast.makeText(context, defuseCodeRequiredMessage, Toast.LENGTH_LONG).show()
-                                return@ActionButton
-                            }
-                            if(timeUntilFinish > 0) {
-                                showDialog = true
-                                return@ActionButton
-                            }
-                            timerViewModel.setTimeUntilFinishInMillis(startTimeInMillis)
-                            startCountDownTimer()
-                        })
+                        ActionButton(buttonText = startButtonText, onClick = onStartButtonClick)
                     }
                 }
             }
@@ -299,18 +313,7 @@ fun SettingsScreen(
                         .weight(1f),
 
                     ) {
-                    ActionButton(buttonText = startButtonText, onClick = {
-                        if(defuseCode.isEmpty()){
-                            Toast.makeText(context, defuseCodeRequiredMessage, Toast.LENGTH_LONG).show()
-                            return@ActionButton
-                        }
-                        if(timeUntilFinish > 0) {
-                            showDialog = true
-                            return@ActionButton
-                        }
-                        timerViewModel.setTimeUntilFinishInMillis(startTimeInMillis)
-                        startCountDownTimer()
-                    })
+                    ActionButton(buttonText = startButtonText, onClick = onStartButtonClick)
                 }
             }
         }
