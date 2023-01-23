@@ -12,6 +12,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -57,105 +58,107 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     DefaultNavHost(
-                        timerViewModel = timerViewModel
+                        timerViewModel = timerViewModel,
+                        preferencesDataStore = preferencesDataStore
                     )
                 }
-            }
-        }
-    }
-
-    @Composable
-    fun DefaultNavHost(
-        modifier: Modifier = Modifier,
-        navController: NavHostController = rememberNavController(),
-        startDestination: String = ScreenRoutes.Home.name,
-        timerViewModel: TimerViewModel
-    ) {
-
-        val isFinished = timerViewModel.isFinished()
-        var dialogDismissed by remember { mutableStateOf( false ) }
-        var showRatingDialog by remember { mutableStateOf( false ) }
-        var isRateButtonClicked by remember { mutableStateOf( false ) }
-
-        NavHost(
-            modifier = modifier,
-            navController = navController,
-            startDestination = startDestination,
-        ){
-            composable(ScreenRoutes.Home.name){
-
-                LaunchedEffect(key1 =  null) {
-                    val appOpensCount = preferencesDataStore.appOpensCount.first()
-                    isRateButtonClicked = preferencesDataStore.isRateButtonClicked.first()
-                    delay(2000)
-                    if(appOpensCount % 2 != 0) showRatingDialog = true
-                }
-
-                if( showRatingDialog
-                    && dialogDismissed.not()
-                    && isRateButtonClicked.not()
-                    && isFinished ){
-
-                    RatingDialog(
-                        title = stringResource(id = R.string.rating_dialog_title),
-                        negativeButtonText = stringResource(id = R.string.rating_dialog_negative_button),
-                        positiveButtonText = stringResource(id = R.string.rating_dialog_positive_button),
-                        onDismiss = {
-                            showRatingDialog = false
-                            dialogDismissed = true
-                        },
-                        onOkClick = {
-
-                            CoroutineScope(Dispatchers.IO).launch {
-                                preferencesDataStore.setRateButtonClicked(true)
-                            }
-
-                            showRatingDialog = false
-                            dialogDismissed = true
-
-                            val appPackageName =  BuildConfig.APPLICATION_ID
-                            val marketIntent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("market://details?id=${appPackageName}")
-                            )
-                            val browserIntent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("https://play.google.com/store/apps/details?id=${appPackageName}")
-                            )
-
-                            try {
-                                startActivity(marketIntent)
-                            }catch (e: ActivityNotFoundException){
-                                startActivity(browserIntent)
-                            }
-                        },
-                        onCancelClick = {
-                            showRatingDialog = false
-                            dialogDismissed = true
-                        }
-                    )
-                }
-
-                HomeScreen(
-                    timerViewModel = timerViewModel,
-                    onSettingsClick = {
-                        navController.navigate(ScreenRoutes.Settings.name)
-                    },
-                )
-            }
-
-            composable(ScreenRoutes.Settings.name){
-                SettingsScreen(
-                    timerViewModel = timerViewModel,
-                    startCountDownTimer = {
-                        navController.popBackStack()
-                    },
-                    onArrowBackPressed = { navController.popBackStack() },
-                )
             }
         }
     }
 }
 
+@Composable
+fun DefaultNavHost(
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
+    startDestination: String = ScreenRoutes.Home.name,
+    timerViewModel: TimerViewModel,
+    preferencesDataStore: PreferencesDataStore
+) {
+
+    val isFinished = timerViewModel.isFinished()
+    var dialogDismissed by remember { mutableStateOf( false ) }
+    var showRatingDialog by remember { mutableStateOf( false ) }
+    var isRateButtonClicked by remember { mutableStateOf( false ) }
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    NavHost(
+        modifier = modifier,
+        navController = navController,
+        startDestination = startDestination,
+    ){
+        composable(ScreenRoutes.Home.name){
+
+            LaunchedEffect(key1 =  null) {
+                val appOpensCount = preferencesDataStore.appOpensCount.first()
+                isRateButtonClicked = preferencesDataStore.isRateButtonClicked.first()
+                delay(2000)
+                if(appOpensCount % 2 != 0) showRatingDialog = true
+            }
+
+            if( showRatingDialog
+                && dialogDismissed.not()
+                && isRateButtonClicked.not()
+                && isFinished ){
+
+                RatingDialog(
+                    title = stringResource(id = R.string.rating_dialog_title),
+                    negativeButtonText = stringResource(id = R.string.rating_dialog_negative_button),
+                    positiveButtonText = stringResource(id = R.string.rating_dialog_positive_button),
+                    onDismiss = {
+                        showRatingDialog = false
+                        dialogDismissed = true
+                    },
+                    onOkClick = {
+                        coroutineScope.launch {
+                            preferencesDataStore.setRateButtonClicked(true)
+                        }
+
+                        showRatingDialog = false
+                        dialogDismissed = true
+
+                        val appPackageName =  BuildConfig.APPLICATION_ID
+                        val marketIntent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("market://details?id=${appPackageName}")
+                        )
+                        val browserIntent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=${appPackageName}")
+                        )
+
+                        try {
+                            context.startActivity(marketIntent)
+                        }catch (e: ActivityNotFoundException){
+                            context.startActivity(browserIntent)
+                        }
+                    },
+                    onCancelClick = {
+                        showRatingDialog = false
+                        dialogDismissed = true
+                    }
+                )
+            }
+
+            HomeScreen(
+                timerViewModel = timerViewModel,
+                onSettingsClick = {
+                    navController.navigate(ScreenRoutes.Settings.name)
+                },
+            )
+        }
+
+        composable(ScreenRoutes.Settings.name){
+            SettingsScreen(
+                timerViewModel = timerViewModel,
+                startCountDownTimer = {
+                    navController.popBackStack()
+                },
+                onArrowBackPressed = { navController.popBackStack() },
+            )
+        }
+    }
+}
 
 
