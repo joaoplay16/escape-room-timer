@@ -12,11 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,19 +30,16 @@ fun KeypadButton(
     modifier: Modifier = Modifier,
     buttonText: String,
     color: Color = MaterialTheme.colors.onSurface,
+    size: Dp = dimensionResource(id = R.dimen.keypad_button_size),
     fontSize: TextUnit = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
     fontWeight: FontWeight = FontWeight.Normal,
     textStyle: TextStyle = MaterialTheme.typography.button,
-    paddingValues: PaddingValues = PaddingValues(
-        horizontal = dimensionResource(id = R.dimen.keypad_button_horizontal_padding),
-        vertical = dimensionResource(id = R.dimen.keypad_button_vertical_padding),
-    ),
     shape: CornerBasedShape = MaterialTheme.shapes.large,
     onClick: (String) -> Unit = {}
 ) {
     Button(
         modifier = modifier
-            .size(dimensionResource(id = R.dimen.keypad_button_size))
+            .size(size)
             .clip(shape),
         onClick = { onClick( buttonText ) }
     ) {
@@ -110,7 +109,12 @@ fun PreviewActionButton() {
 fun PreviewKeypadButton() {
     EscapeRoomTimerTheme() {
         Surface (){
-            KeypadButton(Modifier.padding(20.dp), buttonText = "1")
+            val buttonSize = with(LocalDensity.current) { dimensionResource(id = R.dimen.keypad_button_size)}
+            KeypadButton(
+                size = buttonSize,
+                modifier = Modifier.padding(20.dp),
+                buttonText = "1"
+            )
         }
     }
 }
