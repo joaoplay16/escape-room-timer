@@ -12,6 +12,7 @@
     <dimen name="keypad_button_vertical_padding">10dp</dimen>
     <dimen name="keypad_button_size">75dp</dimen>
     <dimen name="keypad_row_gap">12dp</dimen>
+    <dimen name="keypad_column_gap">12dp</dimen>
     <dimen name="default_icon_padding">15dp</dimen>
     <dimen name="text_label_horizontal_padding">8dp</dimen>
     <dimen name="text_label_vertical_padding">10dp</dimen>
