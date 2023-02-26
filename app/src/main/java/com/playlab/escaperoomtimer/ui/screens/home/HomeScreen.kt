@@ -124,7 +124,6 @@ fun HomeScreen(
                         textStyle = MaterialTheme.typography.h1
                     )
                 }
-                Spacer(modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.keypad_row_gap)))
 
                 if (orientation == Configuration.ORIENTATION_PORTRAIT){
                     Keypad(
@@ -141,8 +140,12 @@ fun HomeScreen(
                         .fillMaxSize()
                         .weight(1f),
                     verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Keypad(
+                        modifier = Modifier.padding(
+                            top = dimensionResource(id = R.dimen.big_timer_top_padding),
+                        ),
                         onDigitClick = onKeypadDigitClick,
                         onOkClick = onKeypadOkClick,
                         onDeleteClick = onKeypadDeleteClick
