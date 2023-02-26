@@ -147,7 +147,7 @@ fun BigSecretCodeInput(
         .copy(
             textAlign = TextAlign.Center,
         ),
-    fontSize: TextUnit = dimensionResource(id = R.dimen.secret_code_font_size).value.sp,
+    fontSize: TextUnit = dimensionResource(id = R.dimen.big_secret_code_font_size).value.sp,
     text: String,
     placeholder: String = "******",
     textColor: Color = MaterialTheme.colors.onPrimary,
