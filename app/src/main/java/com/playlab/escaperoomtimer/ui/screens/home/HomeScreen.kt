@@ -124,6 +124,7 @@ fun HomeScreen(
                         textStyle = MaterialTheme.typography.h1
                     )
                 }
+                Spacer(modifier = Modifier.padding(12.dp))
 
                 if (orientation == Configuration.ORIENTATION_PORTRAIT){
                     Keypad(
