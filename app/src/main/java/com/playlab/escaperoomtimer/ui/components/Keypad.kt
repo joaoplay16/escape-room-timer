@@ -19,7 +19,7 @@ fun Keypad(
     modifier: Modifier = Modifier,
     buttonSize: Dp = dimensionResource(id = R.dimen.keypad_button_size),
     buttonFontSize: TextUnit = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
-    buttonOkFontSize: TextUnit = dimensionResource(id = R.dimen.keypad_button_font_size).value.sp,
+    buttonOkFontSize: TextUnit = dimensionResource(id = R.dimen.keypad_button_ok_font_size).value.sp,
     onDigitClick: (String) -> Unit = {},
     onDeleteClick: () -> Unit = {},
     onOkClick: () -> Unit = {}
@@ -124,7 +124,7 @@ fun Keypad(
             KeypadButton(
                 fontSize = buttonOkFontSize,
                 size = buttonSize,
-                buttonText = "OK",
+                buttonText = "⏎",
                 onClick = { onOkClick() }
             )
         }
