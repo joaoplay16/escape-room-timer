@@ -19,4 +19,6 @@
     <string name="rating_dialog_positive_button">Conte comigo!</string>
     <string name="stop_timer_dialog_yes_button">sim</string>
     <string name="stop_timer_dialog_no_button">não</string>
+    <string name="code_change_not_allowed">A mudança de código de desativação não é permitida quando o timer está em execução!</string>
+    <string name="penalty_change_not_allowed">A mudança da penalidade não é permitida quando o timer está em execução!</string>
 </resources>
