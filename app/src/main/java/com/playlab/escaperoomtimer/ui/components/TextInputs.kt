@@ -95,6 +95,7 @@ fun SecretCodeInput(
     fontSize: TextUnit = dimensionResource(id = R.dimen.input_text_font_size).value.sp,
     placeholder: String = "********",
     isError: Boolean = false,
+    readOnly: Boolean = false,
     maxLength: Int = 10,
     onValueChange: (String) -> Unit
 ) {
@@ -117,6 +118,7 @@ fun SecretCodeInput(
         },
         visualTransformation = PasswordVisualTransformation(),
         singleLine = true,
+        readOnly = readOnly,
         textStyle = textStyle.copy(fontSize = fontSize),
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = if(isError) MaterialTheme.colors.onError else MaterialTheme.colors.primary,
