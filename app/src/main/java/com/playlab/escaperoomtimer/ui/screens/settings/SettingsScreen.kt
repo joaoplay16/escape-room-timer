@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -243,10 +244,22 @@ fun SettingsScreen(
                         top = labelTopPadding,
                         bottom = labelBottomPadding),
                     text = stringResource(id = R.string.defuse_code_input_label))
-                Row(verticalAlignment = Alignment.Bottom) {
+                Row(
+                    modifier = Modifier.onFocusChanged { focusState ->
+                        if(focusState.isFocused && isFinished.not()) {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.code_change_not_allowed),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    },
+                    verticalAlignment = Alignment.Bottom
+                ) {
                     SecretCodeInput(
                         text = defuseCode,
                         maxLength = 8,
+                        readOnly = isFinished.not(),
                         onValueChange = {  timerViewModel.setDefuseCode(it) },
                     )
                 }
@@ -259,9 +272,19 @@ fun SettingsScreen(
                 )
                 Row(verticalAlignment = Alignment.Bottom) {
                     TimeInput(
+                        modifier = Modifier.onFocusChanged { focusState ->
+                            if(focusState.isFocused && isFinished.not()) {
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.penalty_change_not_allowed),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        },
+                        readOnly = isFinished.not(),
                         text = if(penalty > 0) penalty.toString() else "",
                         onValueChange = {
-                          timerViewModel.setPenaltyTime( if( it.isNotBlank() ) it.toInt() else 0 )
+                            timerViewModel.setPenaltyTime( if( it.isNotBlank() ) it.toInt() else 0 )
                         }
                     )
                     TextLabel(
