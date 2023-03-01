@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Escape Room Timer</string>
-    <string name="time_picker_label" translatable="false">Temporizador</string>
+    <string name="time_picker_label">Temporizador</string>
     <string name="defuse_code_input_label">Código de desactivación</string>
     <string name="penalty_label">Penalización</string>
     <string name="penalty_input_seconds_label">seg.</string>
@@ -14,7 +14,7 @@
     <string name="arrow_back_icon_content_description">Atrás</string>
     <string name="settings_icon_content_description">Configuraciones</string>
     <string name="stop_timer_message">¿Detener el temporizador en curso?</string>
-    <string name="rating_dialog_title" translatable="false">Hola, si te gusta esta aplicación, por favor danos tu calificación o sugerencia.</string>
+    <string name="rating_dialog_title">Hola, si te gusta esta aplicación, por favor danos tu calificación o sugerencia.</string>
     <string name="rating_dialog_negative_button">Después</string>
     <string name="rating_dialog_positive_button">¡Cuenta conmigo!</string>
     <string name="stop_timer_dialog_yes_button">sí</string>
