@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'com.google.firebase:firebase-crashlytics:18.3.5'
     implementation 'com.google.firebase:firebase-analytics:21.2.0'
+    implementation "com.google.firebase:firebase-analytics-ktx:21.2.0"
     def navigation_version = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$navigation_version")
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
