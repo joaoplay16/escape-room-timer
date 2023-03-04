@@ -1,0 +1,267 @@
+{
+  "project_info": {
+    "project_number": "495240123975",
+    "firebase_url": "https://friendly-eats-25af8.firebaseio.com",
+    "project_id": "friendly-eats-25af8",
+    "storage_bucket": "friendly-eats-25af8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495240123975:android:15ad4e4be2fcb198338362",
+        "android_client_info": {
+          "package_name": "com.google.firebase.example.fireeats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "495240123975-jcm8556krsofkhvs3ubrspgmklltfefa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.firebase.example.fireeats",
+            "certificate_hash": "c2940d5994b78ce3c9061efb71f2287d19579552"
+          }
+        },
+        {
+          "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0WJOflgg9g3NEULzOK0-zQ9P8flCoHRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495240123975:android:1312f1bc3a1ccada338362",
+        "android_client_info": {
+          "package_name": "com.playlab.animeview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "495240123975-5qoe1k2gksd41conekgtu5aiaq365ejg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.playlab.animeview",
+            "certificate_hash": "c8356f6c60a25772f0535602ecb45e2c06738e7d"
+          }
+        },
+        {
+          "client_id": "495240123975-75t7s5s73r377j0bojogvrh1i4qdporg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.playlab.animeview",
+            "certificate_hash": "c2940d5994b78ce3c9061efb71f2287d19579552"
+          }
+        },
+        {
+          "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0WJOflgg9g3NEULzOK0-zQ9P8flCoHRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495240123975:android:e14609f74d7b6434338362",
+        "android_client_info": {
+          "package_name": "com.playlab.chatfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0WJOflgg9g3NEULzOK0-zQ9P8flCoHRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495240123975:android:3fc402d67f715a44338362",
+        "android_client_info": {
+          "package_name": "com.playlab.escaperoomtimer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0WJOflgg9g3NEULzOK0-zQ9P8flCoHRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495240123975:android:c7d625b5eb566430338362",
+        "android_client_info": {
+          "package_name": "com.playlab.whitelabeltutorial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0WJOflgg9g3NEULzOK0-zQ9P8flCoHRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495240123975:android:d3a03f1075b68d0a338362",
+        "android_client_info": {
+          "package_name": "com.playlab.whitelabeltutorial.bike.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0WJOflgg9g3NEULzOK0-zQ9P8flCoHRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495240123975:android:73d1bef68f7e3ebc338362",
+        "android_client_info": {
+          "package_name": "com.playlab.whitelabeltutorial.car"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0WJOflgg9g3NEULzOK0-zQ9P8flCoHRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495240123975:android:bf605a93c424808e338362",
+        "android_client_info": {
+          "package_name": "com.playlab.whitelabeltutorial.car.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0WJOflgg9g3NEULzOK0-zQ9P8flCoHRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "495240123975-fnl7e1mfdjgfev1h757v37l07uufau3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
