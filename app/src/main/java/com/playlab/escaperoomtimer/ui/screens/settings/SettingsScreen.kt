@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.playlab.escaperoomtimer.R
+import com.playlab.escaperoomtimer.service.FirebaseAnalytics.logAnalyticsEvent
 import com.playlab.escaperoomtimer.ui.DevicesPreviews
 import com.playlab.escaperoomtimer.ui.components.*
 import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
@@ -112,6 +113,9 @@ fun SettingsScreen(
                         buttonText = fullTimerText,
                         onClick = {
                             if (isFinished.not()) showDialog = true
+                            logAnalyticsEvent("click"){
+                                param("button", "Button Stop")
+                            }
                         },
                         fontSize = dimensionResource(id = R.dimen.small_timer_font_size).value.sp,
                         paddingValues = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
@@ -305,6 +309,9 @@ fun SettingsScreen(
                             )
                             .clickable {
                                 tickSoundEnabled = !tickSoundEnabled
+                                logAnalyticsEvent("click"){
+                                    param("button", "Tick Sound Checkbox")
+                                }
                             },
                         text = stringResource(id = R.string.ticking_sound_checkbox_label)
                     )
@@ -323,7 +330,12 @@ fun SettingsScreen(
                             .padding(top = 50.dp), horizontalArrangement = Arrangement.Center
                     ) {
 
-                        ActionButton(buttonText = startButtonText, onClick = onStartButtonClick)
+                        ActionButton(buttonText = startButtonText, onClick = {
+                            onStartButtonClick()
+                            logAnalyticsEvent("click"){
+                                param("button", "Button Start")
+                            }
+                        })
                     }
                 }
             }
@@ -336,7 +348,12 @@ fun SettingsScreen(
                         .weight(1f),
 
                     ) {
-                    ActionButton(buttonText = startButtonText, onClick = onStartButtonClick)
+                    ActionButton(buttonText = startButtonText, onClick = {
+                        onStartButtonClick()
+                        logAnalyticsEvent("click"){
+                            param("button", "Button Start")
+                        }
+                    })
                 }
             }
         }
