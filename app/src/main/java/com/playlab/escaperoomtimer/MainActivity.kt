@@ -18,6 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.playlab.escaperoomtimer.service.FirebaseAnalytics.logAnalyticsEvent
 import com.playlab.escaperoomtimer.ui.components.RatingDialog
 import com.playlab.escaperoomtimer.ui.data.preferences.PreferencesDataStore
 import com.playlab.escaperoomtimer.ui.screens.ScreenRoutes
@@ -109,10 +110,18 @@ fun DefaultNavHost(
                     onDismiss = {
                         showRatingDialog = false
                         dialogDismissed = true
+                        
+                        logAnalyticsEvent("click") {
+                            param("dialog", "Rating dialog dismiss")
+                        }
                     },
                     onOkClick = {
                         coroutineScope.launch {
                             preferencesDataStore.setRateButtonClicked(true)
+
+                            logAnalyticsEvent("click") {
+                                param("button", "Button Rating (yes)")
+                            }
                         }
 
                         showRatingDialog = false
@@ -137,6 +146,10 @@ fun DefaultNavHost(
                     onCancelClick = {
                         showRatingDialog = false
                         dialogDismissed = true
+
+                       logAnalyticsEvent("click") {
+                            param("button", "Button Rating (cancel)")
+                       }
                     }
                 )
             }
