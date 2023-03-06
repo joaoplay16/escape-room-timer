@@ -202,11 +202,24 @@ fun SettingsScreen(
                     text = stringResource(id = R.string.time_picker_label)
                 )
                 Row(verticalAlignment = Alignment.Bottom) {
+
+                    val timeChangeAlert = {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.time_change_not_allowed),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
                     TimeInput(
                         text = getLeftPaddedNumberString(timerHour),
                         readOnly = true,
                         enabled = false,
                         onClick = {
+                            if(isFinished.not()) {
+                                timeChangeAlert()
+                                return@TimeInput
+                            }
                             showTimePickerDialog = true
                         }
                     )
@@ -219,6 +232,10 @@ fun SettingsScreen(
                         readOnly = true,
                         enabled = false,
                         onClick = {
+                            if(isFinished.not()) {
+                                timeChangeAlert()
+                                return@TimeInput
+                            }
                             showTimePickerDialog = true
                         }
                     )
@@ -233,6 +250,10 @@ fun SettingsScreen(
                         readOnly = true,
                         enabled = false,
                         onClick = {
+                            if(isFinished.not()) {
+                                timeChangeAlert()
+                                return@TimeInput
+                            }
                             showTimePickerDialog = true
                         }
                     )
@@ -309,7 +330,7 @@ fun SettingsScreen(
                             )
                             .clickable {
                                 tickSoundEnabled = !tickSoundEnabled
-                                logAnalyticsEvent("click"){
+                                logAnalyticsEvent("click") {
                                     param("button", "Tick Sound Checkbox")
                                 }
                             },
