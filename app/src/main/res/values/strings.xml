@@ -24,4 +24,5 @@
     <string name="stop_timer_dialog_no_button">no</string>
     <string name="code_change_not_allowed">Change of defuse code is not allowed when the timer is in progress!</string>
     <string name="penalty_change_not_allowed">Change of penalty is not allowed when the timer is in progress!</string>
+    <string name="time_change_not_allowed">Change of time is not allowed while the current timer is in progress!</string>
 </resources>
