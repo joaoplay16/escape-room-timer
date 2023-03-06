@@ -19,7 +19,7 @@
     <string name="rating_dialog_positive_button">¡Cuenta conmigo!</string>
     <string name="stop_timer_dialog_yes_button">sí</string>
     <string name="stop_timer_dialog_no_button">no</string>
-    <string name="code_change_not_allowed">No se permite cambiar el código de desactivación cuando el temporizador está en curso.</string>
-    <string name="penalty_change_not_allowed">El cambio de penalización no está permitido cuando el cronómetro está en curso.</string>
+    <string name="code_change_not_allowed">No se permite cambiar el código de desactivación mientras el temporizador esté en curso.</string>
+    <string name="penalty_change_not_allowed">El cambio de penalización no está permitido mientras el temporizador esté en curso.</string>
     <string name="time_change_not_allowed">No está permitido cambiar el temporizador mientras el temporizador actual esté en curso.</string>
 </resources>

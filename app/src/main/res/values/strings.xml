@@ -22,7 +22,7 @@
     <string name="rating_dialog_negative_button">Maybe later</string>
     <string name="stop_timer_dialog_yes_button">yes</string>
     <string name="stop_timer_dialog_no_button">no</string>
-    <string name="code_change_not_allowed">Change of defuse code is not allowed when the timer is in progress!</string>
-    <string name="penalty_change_not_allowed">Change of penalty is not allowed when the timer is in progress!</string>
+    <string name="code_change_not_allowed">Change of defuse code is not allowed while the timer is in progress!</string>
+    <string name="penalty_change_not_allowed">Change of penalty is not allowed while the timer is in progress!</string>
     <string name="time_change_not_allowed">Change of time is not allowed while the current timer is in progress!</string>
 </resources>
