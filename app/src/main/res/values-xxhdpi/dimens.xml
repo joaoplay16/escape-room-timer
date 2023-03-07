@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="keypad_button_size">92dp</dimen>
+    <dimen name="keypad_button_size">76dp</dimen>
 
     <dimen name="keypad_column_gap">18dp</dimen>
     <dimen name="keypad_button_font_size">22sp</dimen>
