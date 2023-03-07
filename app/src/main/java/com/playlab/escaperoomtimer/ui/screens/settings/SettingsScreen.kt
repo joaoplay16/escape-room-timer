@@ -41,6 +41,7 @@ import com.playlab.escaperoomtimer.util.TimeUtil.getTimeInMillis
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     timerViewModel: TimerViewModel,
+    soundEffects: SoundEffects?,
     onArrowBackPressed: ()  -> Unit = {},
     startCountDownTimer: () -> Unit = {},
 ) {
@@ -69,8 +70,6 @@ fun SettingsScreen(
 
     val defuseCodeRequiredMessage = stringResource(id = R.string.defuse_code_required_message)
     val startButtonText = stringResource(id = R.string.start_button_text).uppercase()
-
-    val sfx = remember { SoundEffects(context) }
 
     Scaffold(
         topBar = {
@@ -142,10 +141,10 @@ fun SettingsScreen(
             timerViewModel.setTimeUntilFinishInMillis(startTimeInMillis)
             timerViewModel.startTimer(
                 action = {
-                    if(tickSoundEnabled) sfx.playSound(R.raw.beep)
+                    if(tickSoundEnabled) soundEffects?.playSound(R.raw.beep)
                 },
                 onFinish = {
-                    if(isDefused.not()) sfx.playSound(R.raw.bomb_explosion)
+                    if(isDefused.not()) soundEffects?.playSound(R.raw.bomb_explosion)
                     timerViewModel.stopTimer()
                 }
             )
@@ -388,6 +387,7 @@ fun PreviewSettingsScreen() {
         Surface {
             SettingsScreen(
                 timerViewModel = TimerViewModel(),
+                soundEffects = null
             )
         }
     }

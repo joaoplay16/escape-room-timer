@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -34,6 +33,7 @@ import com.playlab.escaperoomtimer.util.SoundEffects
 fun HomeScreen(
     modifier: Modifier = Modifier,
     timerViewModel: TimerViewModel,
+    soundEffects: SoundEffects?,
     onSettingsClick: () -> Unit = {},
 ) {
     Scaffold(
@@ -58,8 +58,6 @@ fun HomeScreen(
     ) { paddingValues ->
 
         val orientation = LocalConfiguration.current.orientation
-        val context = LocalContext.current
-        val sfx = remember { SoundEffects(context) }
 
         var isDefused by remember{ mutableStateOf(false) }
         var isFinished by remember{ mutableStateOf(false) }
@@ -73,10 +71,10 @@ fun HomeScreen(
             isFinished = timerViewModel.isFinished()
 
             if(isDefused){
-                if(isFinished.not()) sfx.playSound( R.raw.bomb_has_been_defused)
+                if(isFinished.not()) soundEffects?.playSound( R.raw.bomb_has_been_defused)
                 timerViewModel.stopTimer()
             }else{
-                if(isFinished.not()) sfx.playSound(R.raw.error)
+                if(isFinished.not()) soundEffects?.playSound(R.raw.error)
                 timerViewModel.setInputCode("")
                 timerViewModel.penalize()
             }
@@ -163,7 +161,10 @@ fun HomeScreen(
 fun PreviewHomeScreen() {
     EscapeRoomTimerTheme() {
         Surface {
-            HomeScreen(timerViewModel = TimerViewModel())
+            HomeScreen(
+                timerViewModel = TimerViewModel(),
+                soundEffects = null
+            )
         }
     }
 }

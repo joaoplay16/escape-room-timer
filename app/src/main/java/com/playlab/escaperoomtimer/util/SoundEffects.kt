@@ -1,40 +1,39 @@
 package com.playlab.escaperoomtimer.util
 
 import android.content.Context
-import android.media.MediaPlayer
-import android.net.Uri
-import android.os.Build
+import android.media.SoundPool
 
-class SoundEffects(val context: Context) {
+class SoundEffects(private val context: Context) {
 
-    private var mp: MediaPlayer? = null
+    private var soundPool: SoundPool? = null
+    private var soundId: Int? = null
+    private var streamId: Int? = null
 
     fun playSound(resId: Int) {
 
-        if (mp != null) {
-            try {
-                mp!!.reset()
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    mp!!.setDataSource(context.resources.openRawResourceFd(resId))
-                }else{
-                    val uri: Uri = Uri.parse(
-                        "android.resource://${context.packageName}/$resId"
-                    )
-                    mp!!.setDataSource(context, uri)
-                }
-
-                mp!!.prepare()
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }else{
-            mp = MediaPlayer.create(context, resId)
+        if(soundPool == null){
+            soundPool = SoundPool.Builder().setMaxStreams(5).build()
         }
-        mp!!.start()
 
+        soundPool?.let { sp ->
+            soundId = sp.load(context, resId, 1)
+
+            sp.setOnLoadCompleteListener { _, _, _ ->
+               streamId = soundPool!!.play(soundId!!, 1f, 1f, 0, 0, 1f)
+            }
+        }
+    }
+
+    fun stopSound() {
+        streamId?.let {
+            soundPool?.stop(it)
+            streamId = null
+        }
+    }
+
+    fun releaseSoundPool() {
+        soundPool?.release()
+        soundPool = null
+        soundId = null
     }
 }
-
-

@@ -26,6 +26,7 @@ import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.screens.home.HomeScreen
 import com.playlab.escaperoomtimer.ui.screens.settings.SettingsScreen
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
+import com.playlab.escaperoomtimer.util.SoundEffects
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -38,11 +39,13 @@ class MainActivity : ComponentActivity() {
     val timerViewModel: TimerViewModel by viewModels()
 
     lateinit var preferencesDataStore: PreferencesDataStore
+    lateinit var soundEffects: SoundEffects
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         preferencesDataStore = PreferencesDataStore(this)
+        soundEffects = SoundEffects(this)
 
         CoroutineScope(Dispatchers.Main).launch{
             val appOpensCount = preferencesDataStore.appOpensCount.firstOrNull()
@@ -60,11 +63,17 @@ class MainActivity : ComponentActivity() {
 
                     DefaultNavHost(
                         timerViewModel = timerViewModel,
-                        preferencesDataStore = preferencesDataStore
+                        preferencesDataStore = preferencesDataStore,
+                        soundEffects = soundEffects
                     )
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        soundEffects.releaseSoundPool()
     }
 }
 
@@ -74,7 +83,8 @@ fun DefaultNavHost(
     navController: NavHostController = rememberNavController(),
     startDestination: String = ScreenRoutes.Home.name,
     timerViewModel: TimerViewModel,
-    preferencesDataStore: PreferencesDataStore
+    preferencesDataStore: PreferencesDataStore,
+    soundEffects: SoundEffects
 ) {
 
     val isFinished = timerViewModel.isFinished()
@@ -156,6 +166,7 @@ fun DefaultNavHost(
 
             HomeScreen(
                 timerViewModel = timerViewModel,
+                soundEffects = soundEffects,
                 onSettingsClick = {
                     navController.navigate(ScreenRoutes.Settings.name)
                 },
@@ -165,6 +176,7 @@ fun DefaultNavHost(
         composable(ScreenRoutes.Settings.name){
             SettingsScreen(
                 timerViewModel = timerViewModel,
+                soundEffects = soundEffects,
                 startCountDownTimer = {
                     navController.popBackStack()
                 },
