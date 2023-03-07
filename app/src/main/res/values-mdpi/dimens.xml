@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="keypad_button_size">36dp</dimen>
+    <dimen name="keypad_button_size">86dp</dimen>
 
     <dimen name="keypad_column_gap">18dp</dimen>
-    <dimen name="keypad_button_font_size">12sp</dimen>
-    <dimen name="keypad_button_ok_font_size">12sp</dimen>
-    <dimen name="big_secret_code_font_size">38sp</dimen>
-    <dimen name="timer_font_size">46sp</dimen>
-    <dimen name="is_defused_text_font_size">20sp</dimen>
-    <dimen name="text_label_font_size">14sp</dimen>
-    <dimen name="input_text_font_size">12sp</dimen>
-    <dimen name="action_button_font_size">12sp</dimen>
-    <dimen name="small_text_font_size">24sp</dimen>
-    <dimen name="dialog_title_font_size">14sp</dimen>
-    <dimen name="dialog_button_font_size">14sp</dimen>
-    <dimen name="screen_title_font_size">18sp</dimen>
-    <dimen name="small_timer_font_size">12sp</dimen>
+    <dimen name="keypad_button_font_size">26sp</dimen>
+    <dimen name="keypad_button_ok_font_size">26sp</dimen>
+    <dimen name="big_secret_code_font_size">72sp</dimen>
+    <dimen name="timer_font_size">86sp</dimen>
+    <dimen name="is_defused_text_font_size">32sp</dimen>
+    <dimen name="text_label_font_size">22sp</dimen>
+    <dimen name="input_text_font_size">18sp</dimen>
+    <dimen name="action_button_font_size">16sp</dimen>
+    <dimen name="dialog_title_font_size">18sp</dimen>
+    <dimen name="dialog_button_font_size">16sp</dimen>
+    <dimen name="screen_title_font_size">26sp</dimen>
+    <dimen name="small_timer_font_size">16sp</dimen>
 
 
 
