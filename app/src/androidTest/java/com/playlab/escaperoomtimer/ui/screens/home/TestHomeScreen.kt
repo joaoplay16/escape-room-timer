@@ -14,6 +14,7 @@ import com.playlab.escaperoomtimer.R
 import com.playlab.escaperoomtimer.ui.data.preferences.PreferencesDataStore
 import com.playlab.escaperoomtimer.ui.screens.TimerViewModel
 import com.playlab.escaperoomtimer.ui.theme.EscapeRoomTimerTheme
+import com.playlab.escaperoomtimer.util.SoundEffects
 import org.junit.Rule
 import org.junit.Test
 
@@ -37,7 +38,8 @@ class TestHomeScreen {
                 DefaultNavHost(
                     timerViewModel = timerViewModel,
                     preferencesDataStore = PreferencesDataStore(appContext),
-                    navController = navController
+                    navController = navController,
+                    soundEffects = SoundEffects(context = appContext)
                 )
             }
         }
