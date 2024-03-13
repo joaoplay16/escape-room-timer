@@ -1,6 +1,7 @@
 package com.playlab.escaperoomtimer.ui.screens.settings
 
 import android.content.res.Configuration
+import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -112,9 +113,14 @@ fun SettingsScreen(
                         buttonText = fullTimerText,
                         onClick = {
                             if (isFinished.not()) showDialog = true
-                            logAnalyticsEvent("click"){
-                                param("button", "Button Stop")
-                            }
+                            logAnalyticsEvent(
+                                "click",
+                                Bundle().apply {
+                                    putString(
+                                        "button",
+                                        "Button Stop"
+                                    )
+                                })
                         },
                         fontSize = dimensionResource(id = R.dimen.small_timer_font_size).value.sp,
                         paddingValues = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
@@ -329,9 +335,15 @@ fun SettingsScreen(
                             )
                             .clickable {
                                 tickSoundEnabled = !tickSoundEnabled
-                                logAnalyticsEvent("click") {
-                                    param("button", "Tick Sound Checkbox")
-                                }
+                                logAnalyticsEvent(
+                                    "click",
+                                    Bundle().apply {
+                                        putString(
+                                            "button",
+                                            "Tick Sound Checkbox"
+                                        )
+                                    })
+
                             },
                         text = stringResource(id = R.string.ticking_sound_checkbox_label)
                     )
@@ -352,9 +364,14 @@ fun SettingsScreen(
 
                         ActionButton(buttonText = startButtonText, onClick = {
                             onStartButtonClick()
-                            logAnalyticsEvent("click"){
-                                param("button", "Button Start")
-                            }
+                            logAnalyticsEvent(
+                                "click",
+                                Bundle().apply {
+                                    putString(
+                                        "button",
+                                        "Button Start"
+                                    )
+                                })
                         })
                     }
                 }
@@ -370,9 +387,20 @@ fun SettingsScreen(
                     ) {
                     ActionButton(buttonText = startButtonText, onClick = {
                         onStartButtonClick()
-                        logAnalyticsEvent("click"){
-                            param("button", "Button Start")
+                        Bundle().apply {
+                            putString(
+                                "button",
+                                "Button Start"
+                            )
                         }
+                        logAnalyticsEvent(
+                            "click",
+                            Bundle().apply {
+                                putString(
+                                    "button",
+                                    "Button Start"
+                                )
+                            })
                     })
                 }
             }

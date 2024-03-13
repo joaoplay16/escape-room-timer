@@ -120,18 +120,28 @@ fun DefaultNavHost(
                     onDismiss = {
                         showRatingDialog = false
                         dialogDismissed = true
-                        
-                        logAnalyticsEvent("click") {
-                            param("dialog", "Rating dialog dismiss")
-                        }
+
+                        logAnalyticsEvent(
+                            "click",
+                            Bundle().apply {
+                                putString(
+                                    "dialog",
+                                    "Rating dialogdismiss"
+                                )
+                            })
                     },
                     onOkClick = {
                         coroutineScope.launch {
                             preferencesDataStore.setRateButtonClicked(true)
 
-                            logAnalyticsEvent("click") {
-                                param("button", "Button Rating (yes)")
-                            }
+                            logAnalyticsEvent(
+                                "click",
+                                Bundle().apply {
+                                    putString(
+                                        "button",
+                                        "Button Rating (yes)"
+                                    )
+                                })
                         }
 
                         showRatingDialog = false
@@ -157,9 +167,14 @@ fun DefaultNavHost(
                         showRatingDialog = false
                         dialogDismissed = true
 
-                       logAnalyticsEvent("click") {
-                            param("button", "Button Rating (cancel)")
-                       }
+                        logAnalyticsEvent(
+                            "click",
+                            Bundle().apply {
+                                putString(
+                                    "button",
+                                    "Button Rating (cancel)"
+                                )
+                            })
                     }
                 )
             }

@@ -1,10 +1,9 @@
 package com.playlab.escaperoomtimer.service
 
+import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.ParametersBuilder
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.analytics.analytics
+import com.google.firebase.Firebase
 
 object FirebaseAnalytics {
 
@@ -17,7 +16,7 @@ object FirebaseAnalytics {
         return firebaseAnalytics!!
     }
 
-    fun logAnalyticsEvent(eventName: String, pb: ParametersBuilder.() -> Unit) {
-        getInstance().logEvent(eventName, pb)
+    fun logAnalyticsEvent(eventName: String, bundle: Bundle) {
+        getInstance().logEvent(eventName, bundle)
     }
 }
