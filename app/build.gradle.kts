@@ -62,9 +62,9 @@ dependencies {
 
     implementation(libs.androidx.datastore.preferences)
 
+    implementation(libs.google.firebase.bom)
     implementation(libs.google.firebase.crashlytics)
     implementation(libs.google.firebase.analytics)
-    implementation(libs.google.firebase.analytics.ktx)
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.ext.truth)
