@@ -1,11 +1,12 @@
 package com.playlab.escaperoomtimer.ui.components
 
 import android.util.Log
+import androidx.compose.animation.core.EaseInOutQuad
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.gestures.snapping.SnapFlingBehavior
 import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
+import androidx.compose.foundation.gestures.snapping.snapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,14 +41,16 @@ fun WheelTimePicker(
     val listState = rememberLazyListState(0)
     val isScrollInProgress = listState.isScrollInProgress
 
-    val snapFlingBehavior = SnapFlingBehavior(
+    val snapFlingBehavior = snapFlingBehavior(
         snapLayoutInfoProvider = SnapLayoutInfoProvider(listState)
             .also {
-                it.calculateSnappingOffset(0f)
+                it.calculateSnapOffset(0f)
             },
-        lowVelocityAnimationSpec = tween(200),
-        highVelocityAnimationSpec = rememberSplineBasedDecay(),
-        snapAnimationSpec = tween(200),
+        decayAnimationSpec = rememberSplineBasedDecay(),
+        snapAnimationSpec = tween(
+            300,
+            easing = EaseInOutQuad
+        )
     )
 
     LaunchedEffect(key1 = startIndex){
