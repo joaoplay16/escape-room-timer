@@ -30,7 +30,7 @@ google-firebase-analytics-ktx = "21.5.1"
 googleServicesPlugin = "4.4.2"
 crashlyticsPlugin = "3.0.2"
 # @keep
-compileSdk = "34"
+compileSdk = "36"
 compose-compiler = "1.5.10"
 coroutines = "1.8.0"
 gradle-versions = "0.46.0"
@@ -46,7 +46,7 @@ material = "1.12.0"
 minSdk = "21"
 okhttp = "4.10.0"
 # @keep
-targetSdk = "34"
+targetSdk = "36"
 version-catalog-update = "0.8.0"
 espressoCore = "3.5.1"
 
