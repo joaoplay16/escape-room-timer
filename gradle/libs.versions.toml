@@ -28,7 +28,7 @@ google-firebase-crashlytics = "19.2.0"
 google-firebase-analytics = "22.1.2"
 google-firebase-analytics-ktx = "21.5.1"
 googleServicesPlugin = "4.4.3"
-crashlyticsPlugin = "3.0.2"
+crashlyticsPlugin = "3.0.6"
 # @keep
 compileSdk = "36"
 compose-compiler = "1.5.10"
