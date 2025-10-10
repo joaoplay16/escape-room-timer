@@ -27,7 +27,7 @@ google-firebase-bom = "33.4.0"
 google-firebase-crashlytics = "19.2.0"
 google-firebase-analytics = "22.1.2"
 google-firebase-analytics-ktx = "21.5.1"
-googleServicesPlugin = "4.4.3"
+googleServicesPlugin = "4.4.4"
 crashlyticsPlugin = "3.0.6"
 # @keep
 compileSdk = "36"
