@@ -32,7 +32,7 @@ class TimerViewModel : ViewModel() {
         if (timeUntilFinishInMillis.value != 0L && timer == null) {
             timer = Timer()
             viewModelScope.launch {
-                timer?.scheduleAtFixedRate( object : TimerTask() {
+                timer?.schedule( object : TimerTask() {
                     override fun run() {
                         action()
                         if(timeUntilFinishInMillis.value >= 1000) {
